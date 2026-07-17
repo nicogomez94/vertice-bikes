@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Revisá tu selección y completá tu compra en Vértice Bikes.">
+  <meta property="og:title" content="Tu carrito — Vértice Bikes">
+  <title>Tu carrito — Vértice Bikes</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="inner-page cart-page" data-cart-page>
+  <div class="announcement dark-announcement"><div class="announcement-track"><span>6 cuotas sin interés</span><i class="fa-solid fa-diamond"></i><span>Envíos a todo el país</span><i class="fa-solid fa-diamond"></i><span>Armado y calibración incluidos</span></div></div>
+  <header class="site-header inner-header" data-header>
+    <button class="icon-button menu-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
+    <a class="wordmark" href="index.html" aria-label="Vértice Bikes, inicio"><span>VÉRTICE</span><small>BIKES</small></a>
+    <nav class="desktop-nav" aria-label="Navegación principal"><a href="index.html#bicicletas">Bicicletas</a><a href="index.html#metodo">Nuestro método</a><a href="index.html#taller">Taller</a></nav>
+    <div class="header-actions"><a class="icon-button cart-link" href="carrito.html" aria-label="Ver carrito"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count" data-cart-count>0</span></a></div>
+  </header>
+  <aside class="mobile-menu" aria-hidden="true"><div class="mobile-menu-top"><span>MENÚ</span><button class="icon-button menu-close" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button></div><nav><a href="index.html#bicicletas"><span>01</span>Bicicletas</a><a href="index.html#metodo"><span>02</span>Nuestro método</a><a href="index.html#taller"><span>03</span>Taller</a><a href="carrito.html"><span>04</span>Carrito</a></nav><p>Selección profesional. Ajuste preciso. Salí a rodar.</p></aside>
+  <div class="menu-backdrop"></div>
+
+  <main class="cart-main">
+    <section class="cart-heading fade-in">
+      <p class="eyebrow dark">Tu selección</p>
+      <h1>Carrito <span data-cart-title-count>(0)</span></h1>
+      <p>Revisá los detalles antes de continuar.</p>
+    </section>
+    <div class="cart-layout fade-in">
+      <section class="cart-items" data-cart-items aria-label="Productos del carrito"></section>
+      <aside class="cart-summary" data-cart-summary>
+        <h2>Resumen</h2>
+        <div class="summary-row"><span>Subtotal</span><strong data-cart-subtotal>$ 0</strong></div>
+        <div class="summary-row"><span>Envío</span><strong data-cart-shipping>Gratis</strong></div>
+        <div class="summary-row total"><span>Total</span><strong data-cart-total>$ 0</strong></div>
+        <p class="installments" data-installments>o 6 cuotas de $ 0 sin interés</p>
+        <button class="button button-dark checkout-button" type="button">Continuar compra <i class="fa-solid fa-arrow-right"></i></button>
+        <div class="secure-note"><i class="fa-solid fa-lock"></i><span>Compra segura y datos protegidos</span></div>
+        <div class="coupon"><label for="coupon">¿Tenés un código?</label><div><input id="coupon" placeholder="Ingresalo acá"><button type="button" data-coupon>Aplicar</button></div></div>
+      </aside>
+    </div>
+    <section class="cart-help fade-in"><div><i class="fa-regular fa-circle-question"></i><span><strong>¿Necesitás ayuda?</strong> Escribinos y revisamos tu compra con vos.</span></div><a href="https://wa.me/5491100000000?text=Hola%2C%20necesito%20ayuda%20con%20mi%20carrito" target="_blank" rel="noopener">Hablar por WhatsApp <i class="fa-solid fa-arrow-right"></i></a></section>
+  </main>
+  <footer class="footer"><div class="footer-main"><a class="wordmark footer-brand" href="index.html"><span>VÉRTICE</span><small>BIKES</small></a><p>Bicicletas elegidas con criterio.<br>Armadas para tu forma de rodar.</p><div class="footer-links"><a href="index.html#bicicletas">Bicicletas</a><a href="index.html#metodo">Nuestro método</a><a href="index.html#taller">Taller</a></div><div class="footer-contact"><a href="mailto:hola@verticebikes.com.ar">hola@verticebikes.com.ar</a><a href="tel:+541100000000">+54 11 0000 0000</a></div></div><div class="footer-bottom"><span>© 2026 Vértice Bikes</span><span>Buenos Aires, Argentina</span><a href="https://www.instagram.com/" target="_blank" rel="noopener">Instagram</a></div></footer>
+  <a class="whatsapp-float" href="https://wa.me/5491100000000?text=Hola%20V%C3%A9rtice%2C%20quiero%20hacer%20una%20consulta" target="_blank" rel="noopener" aria-label="Consultar por WhatsApp"><span>¿Te asesoramos?</span><i class="fa-brands fa-whatsapp"></i></a>
+  <div class="toast" role="status" aria-live="polite"></div>
+  <script src="main.js"></script>
+</body>
+</html>

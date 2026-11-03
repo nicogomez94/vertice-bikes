@@ -1984,3 +1984,272 @@ p {
     transform: none;
   }
 }
+
+/* Fardella S.A. */
+.fardella-site {
+  --ink: #242220;
+  --ink-soft: #312f2c;
+  --red: #b62a34;
+  --red-bright: #c7353f;
+  --paper: #f5f2ec;
+  --white: #fffdfa;
+  background: var(--paper);
+}
+
+.fardella-site .announcement {
+  background: var(--ink);
+}
+
+.fardella-site .site-header {
+  height: 98px;
+  border-bottom: 1px solid var(--line);
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.fardella-site .wordmark {
+  width: 86px;
+  height: 86px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  font-style: normal;
+}
+
+.fardella-site .wordmark img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+}
+
+.fardella-site .hero {
+  min-height: 0;
+  background: var(--paper);
+  color: var(--ink);
+}
+
+.fardella-site .hero-copy {
+  background: radial-gradient(circle at 100% 5%, rgba(183, 42, 52, .12), transparent 45%), var(--paper);
+}
+
+.fardella-site .hero .eyebrow,
+.fardella-site .story-copy .eyebrow {
+  color: var(--red);
+}
+
+.fardella-site .hero-description {
+  color: #57524e;
+}
+
+.fardella-site .hero-footnote {
+  color: #77716b;
+}
+
+.fardella-site .hero-visual {
+  background: #fff;
+}
+
+.fardella-site .hero-visual img {
+  padding: 24px;
+  object-fit: contain;
+  object-position: center;
+}
+
+.fardella-site .hero-image-caption {
+  background: var(--ink);
+}
+
+.fardella-site .story-image {
+  background: #fff;
+}
+
+.fardella-site .story-image img {
+  object-fit: contain;
+}
+
+.fardella-site .footer-brand {
+  width: 92px;
+  height: 92px;
+  padding: 4px;
+  background: #fff;
+}
+
+.fardella-site .footer-brand img {
+  mix-blend-mode: normal;
+}
+
+.fardella-site .footer-contact {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  font-size: 11px;
+}
+
+.fardella-site .footer-contact a:hover {
+  color: #fa8c91;
+}
+
+.category-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.category-card {
+  min-height: 230px;
+  padding: 27px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  background: #fff;
+  border-top: 3px solid var(--red-bright);
+  transition: transform .25s, box-shadow .25s;
+}
+
+.category-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 15px 30px rgba(30, 20, 20, .08);
+}
+
+.category-card > i {
+  margin-bottom: 23px;
+  color: var(--red);
+  font-size: 26px;
+}
+
+.category-card h3 {
+  margin-bottom: 7px;
+  font-family: var(--display);
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.category-card p {
+  color: var(--muted);
+  font-size: 12px;
+}
+
+.category-card span {
+  margin-top: auto;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .07em;
+  text-transform: uppercase;
+}
+
+.category-card span i {
+  margin-left: 10px;
+}
+
+.brands {
+  background: #ebe6df;
+}
+
+.brands h2 {
+  font-family: var(--display);
+  font-size: 66px;
+  font-weight: 800;
+  line-height: .85;
+  text-transform: uppercase;
+}
+
+.brands h2 em {
+  color: var(--red-bright);
+  font-style: normal;
+}
+
+.brand-list {
+  margin-top: 38px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 0;
+  border-top: 1px solid var(--line);
+}
+
+.brand-list span {
+  padding: 20px 8px;
+  border-bottom: 1px solid var(--line);
+  font-family: var(--display);
+  font-size: 24px;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.contact-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 18px;
+}
+
+.contact-phone {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.product-contact {
+  margin-top: 20px;
+  color: var(--red);
+}
+
+@media (min-width: 600px) {
+  .category-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .brand-list {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 850px) {
+  .fardella-site .site-header {
+    height: 116px;
+  }
+
+  .fardella-site .hero {
+    height: calc(100svh - 148px);
+    min-height: 520px;
+  }
+
+  .fardella-site .hero-copy,
+  .fardella-site .hero-visual {
+    min-height: 0;
+  }
+
+  .fardella-site .wordmark {
+    width: 110px;
+    height: 110px;
+  }
+
+  .fardella-site .footer-brand {
+    width: 92px;
+    height: 92px;
+  }
+
+  .brands h2 {
+    font-size: 88px;
+  }
+}
+
+@media (max-width: 599px) {
+  .fardella-site .hero-copy {
+    min-height: 390px;
+  }
+
+  .fardella-site .hero-visual {
+    min-height: 320px;
+  }
+
+  .fardella-site .hero-visual img {
+    padding: 10px;
+  }
+
+  .brands h2 {
+    font-size: 60px;
+  }
+}

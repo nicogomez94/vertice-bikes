@@ -1,33 +1,63 @@
 const PRODUCTS = [
   {
-    id: "sioux-blanco",
-    name: "Sioux Dama / Blanco",
-    color: "Blanco",
-    category: "blanco",
-    code: "BICSIOUX275DB",
-    price: 272727.27,
-    image: "assets/images/skinred/sioux-blanco.jpg",
-    swatch: "#e8e7df"
+    id: "sicilia-negra",
+    name: "Sicilia Dama R28",
+    brand: "Battle / Philco",
+    category: "bicicletas",
+    type: "Bicicleta urbana",
+    code: "BICSICILIA28DN",
+    price: 156198.35,
+    image: "assets/images/fardella/sicilia-negra.jpg",
+    description: "Bicicleta de paseo Sicilia Dama rodado 28, de una velocidad, con guardabarros y portapaquete. Terminación negra.",
+    specs: { Marca: "Battle / Philco", Modelo: "Sicilia Dama", Rodado: "28 pulgadas", Velocidades: "1", Equipamiento: "Guardabarros y portapaquete", Color: "Negro" }
   },
   {
-    id: "sioux-negro-brillante",
-    name: "Sioux Dama / Negro brillante",
-    color: "Negro brillante",
-    category: "negro",
-    code: "BICSIOUX275DNB",
-    price: 272727.27,
-    image: "assets/images/skinred/sioux-negro-brillante.jpg",
-    swatch: "#1c1c1f"
+    id: "battle-gris",
+    name: "Battle R29 24v",
+    brand: "Battle",
+    category: "bicicletas",
+    type: "Bicicleta MTB",
+    code: "BICBATTLE2924GR",
+    price: 289256.20,
+    image: "assets/images/fardella/battle-gris.jpg",
+    description: "Bicicleta Battle rodado 29 con 24 velocidades, frenos hidráulicos, suspensión Suntour con bloqueo y transmisión Microshift con palanca TY301. Color gris.",
+    specs: { Marca: "Battle", Rodado: "29 pulgadas", Velocidades: "24", Frenos: "Hidráulicos", Suspensión: "Suntour con bloqueo", Transmisión: "Microshift con palanca TY301", Color: "Gris" }
   },
   {
-    id: "sioux-negro-mate",
-    name: "Sioux Dama / Negro mate",
-    color: "Negro mate",
-    category: "negro",
-    code: "BICSIOUX275DNM",
-    price: 272727.27,
-    image: "assets/images/skinred/sioux-negro-mate.jpg",
-    swatch: "#3d3b3c"
+    id: "cobra-r29",
+    name: "Cubierta Cobra R29",
+    brand: "Hutchinson",
+    category: "repuestos",
+    type: "Cubierta",
+    code: "PV699992",
+    price: 38603.31,
+    image: "assets/images/fardella/cubierta-cobra.jpg",
+    description: "Cubierta Hutchinson Cobra rodado 29 × 2.10, construcción de 127 TPI.",
+    specs: { Marca: "Hutchinson", Modelo: "Cobra", Medida: "R29 × 2.10", Construcción: "127 TPI" }
+  },
+  {
+    id: "gafas-flash",
+    name: "Gafas Flash Azul",
+    brand: "Accesorios",
+    category: "accesorios",
+    type: "Gafas",
+    code: "X1917230496",
+    price: 14834,
+    image: "assets/images/fardella/gafas-flash.jpg",
+    description: "Gafas Flash en color azul, incluidas en la selección de accesorios del catálogo.",
+    specs: { Producto: "Gafas Flash", Color: "Azul", Código: "X1917230496" }
+  },
+  {
+    id: "guante-power",
+    name: "Guante Power Negro",
+    brand: "Accesorios",
+    category: "accesorios",
+    type: "Guantes",
+    code: "X20122201005",
+    price: 9257.12,
+    image: "assets/images/fardella/guante-power.jpg",
+    description: "Guante Power negro, disponible en talles M, L, XL y XXL según el catálogo.",
+    specs: { Producto: "Guante Power", Color: "Negro", Talles: "M, L, XL, XXL", Código: "X20122201005" }
   }
 ];
 
@@ -36,32 +66,21 @@ const formatPrice = value => "$ " + new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 2
 }).format(value);
 
-const cartKey = "skinred-cart-v1";
-const DEBUG = ["localhost", "127.0.0.1"].includes(window.location.hostname)
-  && new URLSearchParams(window.location.search).get("debug") === "true";
-
+const cartKey = "fardella-cart-v1";
 const getCart = () => {
-  try {
-    return JSON.parse(localStorage.getItem(cartKey)) || [];
-  } catch {
-    return [];
-  }
+  try { return JSON.parse(localStorage.getItem(cartKey)) || []; }
+  catch { return []; }
 };
-
 const saveCart = cart => {
   localStorage.setItem(cartKey, JSON.stringify(cart));
   updateCartCount();
 };
-
 const updateCartCount = () => {
   const count = getCart().reduce((sum, item) => sum + item.qty, 0);
-  document.querySelectorAll("[data-cart-count]").forEach(el => {
-    el.textContent = count;
-  });
+  document.querySelectorAll("[data-cart-count]").forEach(el => { el.textContent = count; });
 };
 
 let toastTimer;
-
 const showToast = message => {
   const toast = document.querySelector(".toast");
   if (!toast) return;
@@ -71,28 +90,27 @@ const showToast = message => {
   toastTimer = setTimeout(() => toast.classList.remove("show"), 2800);
 };
 
-const addToCart = (id, size = "15", qty = 1) => {
+const addToCart = (id, qty = 1) => {
   const cart = getCart();
-  const existing = cart.find(item => item.id === id && item.size === size);
+  const existing = cart.find(item => item.id === id);
   if (existing) existing.qty += qty;
-  else cart.push({ id, size, qty });
+  else cart.push({ id, qty });
   saveCart(cart);
-  const product = PRODUCTS.find(item => item.id === id);
-  showToast(`${product.name} se agregó al carrito`);
+  showToast(`${PRODUCTS.find(item => item.id === id).name} se agregó a tu selección`);
 };
 
 const productCard = product => `
   <article class="product-card" data-category="${product.category}">
     <a class="product-image-wrap" href="producto.html?id=${product.id}" aria-label="Ver ${product.name}">
-      <img src="${product.image}" alt="Bicicleta Skin Red ${product.name}" loading="lazy">
-      <span class="product-tag">Skin Red / Sioux</span>
+      <img src="${product.image}" alt="${product.name}" loading="lazy">
+      <span class="product-tag">${product.type}</span>
     </a>
     <div class="product-card-content">
-      <div class="product-card-meta"><span>Rodado 27,5 · 21v</span><span>${product.code}</span></div>
+      <div class="product-card-meta"><span>${product.brand}</span><span>${product.code}</span></div>
       <a href="producto.html?id=${product.id}"><h3>${product.name}</h3></a>
       <div class="product-card-bottom">
         <div class="product-card-price"><strong>${formatPrice(product.price)}</strong><span>Precio de lista + IVA</span></div>
-        <button class="quick-add" data-quick-add="${product.id}" aria-label="Agregar ${product.name} al carrito"><i class="fa-solid fa-plus"></i></button>
+        <button class="quick-add" data-quick-add="${product.id}" aria-label="Agregar ${product.name} a la selección"><i class="fa-solid fa-plus"></i></button>
       </div>
     </div>
   </article>
@@ -109,87 +127,55 @@ const renderCatalog = () => {
   if (!grid) return;
   grid.innerHTML = PRODUCTS.map(productCard).join("");
   bindQuickAdds(grid);
-
-  document.querySelectorAll("[data-filter]").forEach(button => {
-    button.addEventListener("click", () => {
-      document.querySelectorAll("[data-filter]").forEach(item => item.classList.remove("active"));
-      button.classList.add("active");
-      grid.querySelectorAll(".product-card").forEach(card => {
-        card.hidden = button.dataset.filter !== "todos" && card.dataset.category !== button.dataset.filter;
-      });
+  const applyFilter = filter => {
+    document.querySelectorAll("[data-filter]").forEach(button => {
+      button.classList.toggle("active", button.dataset.filter === filter);
     });
+    grid.querySelectorAll(".product-card").forEach(card => {
+      card.hidden = filter !== "todos" && card.dataset.category !== filter;
+    });
+  };
+  document.querySelectorAll("[data-filter]").forEach(button => {
+    button.addEventListener("click", () => applyFilter(button.dataset.filter));
+  });
+  document.querySelectorAll("[data-category-link]").forEach(link => {
+    link.addEventListener("click", () => applyFilter(link.dataset.categoryLink));
   });
 };
 
 const renderProductPage = () => {
   const target = document.querySelector("[data-product-detail]");
   if (!target) return;
-  const params = new URLSearchParams(window.location.search);
-  const id = params.get("id") || PRODUCTS[0].id;
-  const initialSize = params.get("size") === "17" ? "17" : "15";
+  const id = new URLSearchParams(window.location.search).get("id");
   const product = PRODUCTS.find(item => item.id === id) || PRODUCTS[0];
-  document.title = `${product.name} — Skin Red`;
+  document.title = `${product.name} — Fardella S.A.`;
   document.querySelector("[data-product-breadcrumb]").textContent = product.name;
-
   target.innerHTML = `
-    <div class="product-gallery">
-      <div class="gallery-main">
-        <img src="${product.image}" alt="Bicicleta Skin Red ${product.name}">
-      </div>
-    </div>
+    <div class="product-gallery"><div class="gallery-main"><img src="${product.image}" alt="${product.name}"></div></div>
     <div class="product-info">
-      <p class="product-type">Skin Red · Sioux Dama</p>
+      <p class="product-type">${product.brand} · ${product.type}</p>
       <h1>${product.name}</h1>
       <span class="product-code">Código ${product.code}</span>
       <p class="product-price">${formatPrice(product.price)}</p>
       <p class="product-financing">Precio de lista + IVA</p>
-      <p class="product-description">Bicicleta Skin Red Sioux Dama rodado 27,5 con 21 velocidades. Se presenta en talles 15 y 17, con manija, plato, palanca y cambio Shimano.</p>
-      <div class="choice-label"><span>Talle</span><span>Elegí una opción</span></div>
-      <div class="size-options" role="group" aria-label="Elegir talle">
-        <button class="size-option ${initialSize === "15" ? "active" : ""}" type="button" data-size="15" aria-pressed="${initialSize === "15"}">15</button>
-        <button class="size-option ${initialSize === "17" ? "active" : ""}" type="button" data-size="17" aria-pressed="${initialSize === "17"}">17</button>
-      </div>
-      <div class="choice-label"><span>Terminación</span><span>Ver otra versión</span></div>
-      <div class="color-options" aria-label="Otras versiones">
-        ${PRODUCTS.map(item => `<a class="color-option ${item.id === product.id ? "active" : ""}" href="producto.html?id=${item.id}" aria-label="${item.color}" title="${item.color}"><span style="background:${item.swatch}"></span></a>`).join("")}
-      </div>
+      <p class="product-description">${product.description}</p>
       <div class="buy-row">
         <div class="quantity-control" aria-label="Cantidad">
           <button type="button" data-product-minus aria-label="Restar">−</button>
           <span data-product-qty>1</span>
           <button type="button" data-product-plus aria-label="Sumar">+</button>
         </div>
-        <button class="button button-accent" type="button" data-product-add>Agregar al carrito <i class="fa-solid fa-plus"></i></button>
+        <button class="button button-accent" type="button" data-product-add>Agregar a selección <i class="fa-solid fa-plus"></i></button>
       </div>
       <p class="stock-note"><i class="fa-solid fa-circle-info"></i> Disponibilidad y condiciones comerciales sujetas a confirmación.</p>
+      <a class="text-link product-contact" href="mailto:info@fardella.com.ar?subject=Consulta%20${encodeURIComponent(product.code)}">Consultar este producto <i class="fa-solid fa-arrow-right"></i></a>
     </div>
   `;
-
-  document.querySelector("[data-product-specs]").innerHTML = `
-    <div class="spec-row"><span>Modelo</span><strong>Sioux Dama</strong></div>
-    <div class="spec-row"><span>Rodado</span><strong>27,5 pulgadas</strong></div>
-    <div class="spec-row"><span>Velocidades</span><strong>21</strong></div>
-    <div class="spec-row"><span>Talles</span><strong>15 / 17</strong></div>
-    <div class="spec-row"><span>Componentes</span><strong>Manija, plato, palanca y cambio Shimano</strong></div>
-    <div class="spec-row"><span>Color</span><strong>${product.color}</strong></div>
-    <div class="spec-row"><span>Código</span><strong>${product.code}</strong></div>
-  `;
-
+  document.querySelector("[data-product-specs]").innerHTML = Object.entries(product.specs)
+    .map(([label, value]) => `<div class="spec-row"><span>${label}</span><strong>${value}</strong></div>`).join("");
   const related = document.querySelector("[data-related-grid]");
-  related.innerHTML = PRODUCTS.filter(item => item.id !== product.id).map(productCard).join("");
+  related.innerHTML = PRODUCTS.filter(item => item.id !== product.id).slice(0, 3).map(productCard).join("");
   bindQuickAdds(related);
-
-  target.querySelectorAll("[data-size]").forEach(button => {
-    button.addEventListener("click", () => {
-      target.querySelectorAll("[data-size]").forEach(item => {
-        item.classList.remove("active");
-        item.setAttribute("aria-pressed", "false");
-      });
-      button.classList.add("active");
-      button.setAttribute("aria-pressed", "true");
-    });
-  });
-
   let qty = 1;
   const qtyEl = target.querySelector("[data-product-qty]");
   target.querySelector("[data-product-minus]").addEventListener("click", () => {
@@ -200,33 +186,20 @@ const renderProductPage = () => {
     qty = Math.min(9, qty + 1);
     qtyEl.textContent = qty;
   });
-  target.querySelector("[data-product-add]").addEventListener("click", () => {
-    const size = target.querySelector("[data-size].active").dataset.size;
-    addToCart(product.id, size, qty);
-  });
+  target.querySelector("[data-product-add]").addEventListener("click", () => addToCart(product.id, qty));
 };
 
 const renderCart = () => {
   const list = document.querySelector("[data-cart-items]");
   if (!list) return;
   const cart = getCart().filter(item => PRODUCTS.some(product => product.id === item.id));
-  const count = cart.reduce((sum, item) => sum + item.qty, 0);
-  document.querySelector("[data-cart-title-count]").textContent = `(${count})`;
+  document.querySelector("[data-cart-title-count]").textContent = `(${cart.reduce((sum, item) => sum + item.qty, 0)})`;
   const summary = document.querySelector("[data-cart-summary]");
-
   if (!cart.length) {
-    list.innerHTML = `
-      <div class="empty-cart">
-        <i class="fa-solid fa-bicycle"></i>
-        <h2>Tu selección está vacía.</h2>
-        <p>Explorá las tres versiones Skin Red Sioux.</p>
-        <a class="button button-accent" href="index.html#modelos">Ver modelos <i class="fa-solid fa-arrow-right"></i></a>
-      </div>
-    `;
+    list.innerHTML = `<div class="empty-cart"><i class="fa-solid fa-bicycle"></i><h2>Tu selección está vacía.</h2><p>Explorá las categorías de Fardella y encontrá lo que necesitás.</p><a class="button button-accent" href="index.html#productos">Ver productos <i class="fa-solid fa-arrow-right"></i></a></div>`;
     summary.hidden = true;
     return;
   }
-
   summary.hidden = false;
   list.innerHTML = cart.map((item, index) => {
     const product = PRODUCTS.find(entry => entry.id === item.id);
@@ -234,128 +207,43 @@ const renderCart = () => {
       <article class="cart-item">
         <a class="cart-item-image" href="producto.html?id=${product.id}"><img src="${product.image}" alt="${product.name}"></a>
         <div class="cart-item-info">
-          <div class="cart-item-top">
-            <div><a href="producto.html?id=${product.id}"><h3>${product.name}</h3></a><span class="cart-item-meta">Talle ${item.size} · ${product.code}</span></div>
-            <button class="cart-remove" data-cart-remove="${index}" aria-label="Eliminar ${product.name}"><i class="fa-regular fa-trash-can"></i></button>
-          </div>
-          <div class="cart-item-bottom">
-            <div class="quantity-control">
-              <button data-cart-minus="${index}" aria-label="Restar">−</button>
-              <span>${item.qty}</span>
-              <button data-cart-plus="${index}" aria-label="Sumar">+</button>
-            </div>
-            <strong class="cart-item-price">${formatPrice(product.price * item.qty)}</strong>
-          </div>
+          <div class="cart-item-top"><div><a href="producto.html?id=${product.id}"><h3>${product.name}</h3></a><span class="cart-item-meta">${product.type} · ${product.code}</span></div><button class="cart-remove" data-cart-remove="${index}" aria-label="Eliminar ${product.name}"><i class="fa-regular fa-trash-can"></i></button></div>
+          <div class="cart-item-bottom"><div class="quantity-control"><button data-cart-minus="${index}" aria-label="Restar">−</button><span>${item.qty}</span><button data-cart-plus="${index}" aria-label="Sumar">+</button></div><strong class="cart-item-price">${formatPrice(product.price * item.qty)}</strong></div>
         </div>
       </article>
     `;
   }).join("");
-
-  const subtotal = cart.reduce((sum, item) => {
-    const product = PRODUCTS.find(entry => entry.id === item.id);
-    return sum + product.price * item.qty;
-  }, 0);
+  const subtotal = cart.reduce((sum, item) => sum + PRODUCTS.find(p => p.id === item.id).price * item.qty, 0);
   document.querySelector("[data-cart-subtotal]").textContent = formatPrice(subtotal);
   document.querySelector("[data-cart-total]").textContent = formatPrice(subtotal);
-
   list.querySelectorAll("[data-cart-remove]").forEach(button => button.addEventListener("click", () => {
-    const current = getCart();
-    current.splice(Number(button.dataset.cartRemove), 1);
-    saveCart(current);
-    renderCart();
+    const current = getCart(); current.splice(Number(button.dataset.cartRemove), 1); saveCart(current); renderCart();
   }));
   list.querySelectorAll("[data-cart-minus]").forEach(button => button.addEventListener("click", () => {
-    const current = getCart();
-    const item = current[Number(button.dataset.cartMinus)];
-    item.qty = Math.max(1, item.qty - 1);
-    saveCart(current);
-    renderCart();
+    const current = getCart(); current[Number(button.dataset.cartMinus)].qty = Math.max(1, current[Number(button.dataset.cartMinus)].qty - 1); saveCart(current); renderCart();
   }));
   list.querySelectorAll("[data-cart-plus]").forEach(button => button.addEventListener("click", () => {
-    const current = getCart();
-    const item = current[Number(button.dataset.cartPlus)];
-    item.qty = Math.min(9, item.qty + 1);
-    saveCart(current);
-    renderCart();
+    const current = getCart(); current[Number(button.dataset.cartPlus)].qty = Math.min(9, current[Number(button.dataset.cartPlus)].qty + 1); saveCart(current); renderCart();
   }));
-};
-
-const setupFinder = () => {
-  const form = document.querySelector("[data-finder-form]");
-  if (!form) return;
-
-  if (DEBUG && window.skinRedDebugDefaults) {
-    const { color, size } = window.skinRedDebugDefaults;
-    form.querySelector(`[name="color"][value="${color}"]`).checked = true;
-    form.querySelector(`[name="size"][value="${size}"]`).checked = true;
-  }
-
-  form.addEventListener("change", () => {
-    document.querySelector("[data-finder-result]").hidden = true;
-  });
-
-  form.addEventListener("submit", event => {
-    event.preventDefault();
-    const data = new FormData(form);
-    const product = PRODUCTS.find(item => item.id === data.get("color"));
-    const size = data.get("size");
-    if (!product || !["15", "17"].includes(size)) return;
-
-    const result = document.querySelector("[data-finder-result]");
-    result.innerHTML = `
-      <div class="finder-result-image">
-        <img src="${product.image}" alt="Skin Red ${product.name}">
-      </div>
-      <div class="finder-result-copy">
-        <p class="eyebrow dark">Tu elección</p>
-        <h3>${product.name}</h3>
-        <p>Rodado 27,5 · 21 velocidades · Talle ${size}</p>
-        <span class="finder-result-code">Código ${product.code}</span>
-        <div class="finder-result-actions">
-          <a class="button button-dark" href="producto.html?id=${product.id}&size=${size}">Ver detalles <i class="fa-solid fa-arrow-right"></i></a>
-          <button type="button" class="finder-add" data-finder-add>Agregar al carrito <i class="fa-solid fa-plus"></i></button>
-        </div>
-      </div>
-    `;
-    result.hidden = false;
-    result.querySelector("[data-finder-add]").addEventListener("click", () => addToCart(product.id, size));
-    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
-  });
 };
 
 const setupShareSelection = () => {
   const button = document.querySelector("[data-share-selection]");
   if (!button) return;
-
-  button.addEventListener("click", async () => {
-    const items = getCart().filter(item => PRODUCTS.some(product => product.id === item.id));
-    if (!items.length) return;
-
-    const lines = items.map(item => {
-      const product = PRODUCTS.find(entry => entry.id === item.id);
-      const url = new URL(`producto.html?id=${product.id}&size=${item.size}`, window.location.href);
-      return `${item.qty} × ${product.name} · Talle ${item.size} · ${product.code}\n${url}`;
+  button.addEventListener("click", () => {
+    const lines = getCart().filter(item => PRODUCTS.some(p => p.id === item.id)).map(item => {
+      const product = PRODUCTS.find(p => p.id === item.id);
+      return `${item.qty} × ${product.name} · ${product.code} · ${formatPrice(product.price * item.qty)}`;
     });
-    const shareText = `Mi selección Skin Red:\n\n${lines.join("\n\n")}\n\nPrecios de lista + IVA.`;
-
-    const textArea = document.createElement("textarea");
-    textArea.value = shareText;
-    textArea.setAttribute("readonly", "");
-    textArea.style.position = "fixed";
-    textArea.style.opacity = "0";
-    document.body.appendChild(textArea);
-    textArea.select();
-    let copied = document.execCommand("copy");
-    textArea.remove();
-
-    if (!copied && navigator.clipboard?.writeText) {
-      try {
-        await navigator.clipboard.writeText(shareText);
-        copied = true;
-      } catch {
-        copied = false;
-      }
-    }
+    const text = `Mi selección Fardella S.A.:\n\n${lines.join("\n")}\n\nPrecios de lista + IVA.`;
+    const area = document.createElement("textarea");
+    area.value = text;
+    area.style.position = "fixed";
+    area.style.opacity = "0";
+    document.body.appendChild(area);
+    area.select();
+    const copied = document.execCommand("copy");
+    area.remove();
     showToast(copied ? "Selección copiada para compartir" : "No se pudo copiar la selección");
   });
 };
@@ -365,71 +253,42 @@ const setupNavigation = () => {
   const backdrop = document.querySelector(".menu-backdrop");
   const toggle = document.querySelector(".menu-toggle");
   const closeMenu = () => {
-    menu.classList.remove("open");
-    backdrop.classList.remove("open");
-    menu.setAttribute("aria-hidden", "true");
-    toggle.setAttribute("aria-expanded", "false");
+    menu.classList.remove("open"); backdrop.classList.remove("open");
+    menu.setAttribute("aria-hidden", "true"); toggle.setAttribute("aria-expanded", "false");
   };
   toggle.addEventListener("click", () => {
-    menu.classList.add("open");
-    backdrop.classList.add("open");
-    menu.setAttribute("aria-hidden", "false");
-    toggle.setAttribute("aria-expanded", "true");
+    menu.classList.add("open"); backdrop.classList.add("open");
+    menu.setAttribute("aria-hidden", "false"); toggle.setAttribute("aria-expanded", "true");
   });
   document.querySelector(".menu-close").addEventListener("click", closeMenu);
   backdrop.addEventListener("click", closeMenu);
   menu.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
-
   const panel = document.querySelector(".search-panel");
-  const closeSearch = () => {
-    panel?.classList.remove("open");
-    panel?.setAttribute("aria-hidden", "true");
-  };
+  const closeSearch = () => { panel?.classList.remove("open"); panel?.setAttribute("aria-hidden", "true"); };
   document.querySelector(".search-toggle")?.addEventListener("click", () => {
-    panel.classList.add("open");
-    panel.setAttribute("aria-hidden", "false");
-    panel.querySelector("input").focus();
+    panel.classList.add("open"); panel.setAttribute("aria-hidden", "false"); panel.querySelector("input").focus();
   });
   document.querySelector(".search-close")?.addEventListener("click", closeSearch);
   panel?.querySelector("input")?.addEventListener("input", event => {
     const value = event.target.value.toLocaleLowerCase("es").trim();
-    const matches = value ? PRODUCTS.filter(product => `${product.name} ${product.code}`.toLocaleLowerCase("es").includes(value)) : [];
+    const matches = value ? PRODUCTS.filter(p => `${p.name} ${p.brand} ${p.type} ${p.code}`.toLocaleLowerCase("es").includes(value)) : [];
     panel.querySelector(".search-results").innerHTML = matches.length
-      ? matches.map(product => `<a href="producto.html?id=${product.id}">${product.name} <i class="fa-solid fa-arrow-right"></i></a>`).join("")
+      ? matches.map(p => `<a href="producto.html?id=${p.id}">${p.name} <i class="fa-solid fa-arrow-right"></i></a>`).join("")
       : value ? "<span>No encontramos coincidencias.</span>" : "";
   });
-  document.addEventListener("keydown", event => {
-    if (event.key === "Escape") {
-      closeMenu();
-      closeSearch();
-    }
-  });
+  document.addEventListener("keydown", event => { if (event.key === "Escape") { closeMenu(); closeSearch(); } });
 };
 
 const setupObserver = () => {
   const elements = document.querySelectorAll(".fade-in");
-  if (!("IntersectionObserver" in window)) {
-    elements.forEach(el => el.classList.add("visible"));
-    return;
-  }
+  if (!("IntersectionObserver" in window)) { elements.forEach(el => el.classList.add("visible")); return; }
   const observer = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add("visible");
-        observer.unobserve(entry.target);
-      }
-    });
-  }, { threshold: 0.08 });
+    entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add("visible"); observer.unobserve(entry.target); } });
+  }, { threshold: .08 });
   elements.forEach(el => observer.observe(el));
 };
 
 document.addEventListener("DOMContentLoaded", () => {
-  updateCartCount();
-  renderCatalog();
-  renderProductPage();
-  renderCart();
-  setupNavigation();
-  setupObserver();
-  setupFinder();
-  setupShareSelection();
+  updateCartCount(); renderCatalog(); renderProductPage(); renderCart();
+  setupNavigation(); setupObserver(); setupShareSelection();
 });

@@ -36,7 +36,9 @@ const formatPrice = value => "$ " + new Intl.NumberFormat("es-AR", {
   maximumFractionDigits: 2
 }).format(value);
 
-const cartKey = "skinred-demo-cart-v1";
+const cartKey = "skinred-cart-v1";
+const DEBUG = ["localhost", "127.0.0.1"].includes(window.location.hostname)
+  && new URLSearchParams(window.location.search).get("debug") === "true";
 
 const getCart = () => {
   try {
@@ -76,7 +78,7 @@ const addToCart = (id, size = "15", qty = 1) => {
   else cart.push({ id, size, qty });
   saveCart(cart);
   const product = PRODUCTS.find(item => item.id === id);
-  showToast(`${product.name} se agregó al carrito de muestra`);
+  showToast(`${product.name} se agregó al carrito`);
 };
 
 const productCard = product => `
@@ -90,7 +92,7 @@ const productCard = product => `
       <a href="producto.html?id=${product.id}"><h3>${product.name}</h3></a>
       <div class="product-card-bottom">
         <div class="product-card-price"><strong>${formatPrice(product.price)}</strong><span>Precio de lista + IVA</span></div>
-        <button class="quick-add" data-quick-add="${product.id}" aria-label="Agregar ${product.name} al carrito de muestra"><i class="fa-solid fa-plus"></i></button>
+        <button class="quick-add" data-quick-add="${product.id}" aria-label="Agregar ${product.name} al carrito"><i class="fa-solid fa-plus"></i></button>
       </div>
     </div>
   </article>
@@ -122,7 +124,9 @@ const renderCatalog = () => {
 const renderProductPage = () => {
   const target = document.querySelector("[data-product-detail]");
   if (!target) return;
-  const id = new URLSearchParams(window.location.search).get("id") || PRODUCTS[0].id;
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get("id") || PRODUCTS[0].id;
+  const initialSize = params.get("size") === "17" ? "17" : "15";
   const product = PRODUCTS.find(item => item.id === id) || PRODUCTS[0];
   document.title = `${product.name} — Skin Red`;
   document.querySelector("[data-product-breadcrumb]").textContent = product.name;
@@ -132,19 +136,18 @@ const renderProductPage = () => {
       <div class="gallery-main">
         <img src="${product.image}" alt="Bicicleta Skin Red ${product.name}">
       </div>
-      <p>Fotografía del catálogo de septiembre 2026</p>
     </div>
     <div class="product-info">
       <p class="product-type">Skin Red · Sioux Dama</p>
       <h1>${product.name}</h1>
       <span class="product-code">Código ${product.code}</span>
       <p class="product-price">${formatPrice(product.price)}</p>
-      <p class="product-financing">Precio de lista + IVA · Catálogo septiembre 2026</p>
-      <p class="product-description">Bicicleta Skin Red Sioux Dama rodado 27,5 con 21 velocidades. El catálogo indica talles 15 y 17 y componentes Shimano en manija, plato, palanca y cambio.</p>
+      <p class="product-financing">Precio de lista + IVA</p>
+      <p class="product-description">Bicicleta Skin Red Sioux Dama rodado 27,5 con 21 velocidades. Se presenta en talles 15 y 17, con manija, plato, palanca y cambio Shimano.</p>
       <div class="choice-label"><span>Talle</span><span>Elegí una opción</span></div>
       <div class="size-options" role="group" aria-label="Elegir talle">
-        <button class="size-option active" type="button" data-size="15" aria-pressed="true">15</button>
-        <button class="size-option" type="button" data-size="17" aria-pressed="false">17</button>
+        <button class="size-option ${initialSize === "15" ? "active" : ""}" type="button" data-size="15" aria-pressed="${initialSize === "15"}">15</button>
+        <button class="size-option ${initialSize === "17" ? "active" : ""}" type="button" data-size="17" aria-pressed="${initialSize === "17"}">17</button>
       </div>
       <div class="choice-label"><span>Terminación</span><span>Ver otra versión</span></div>
       <div class="color-options" aria-label="Otras versiones">
@@ -156,9 +159,9 @@ const renderProductPage = () => {
           <span data-product-qty>1</span>
           <button type="button" data-product-plus aria-label="Sumar">+</button>
         </div>
-        <button class="button button-accent" type="button" data-product-add>Agregar a muestra <i class="fa-solid fa-plus"></i></button>
+        <button class="button button-accent" type="button" data-product-add>Agregar al carrito <i class="fa-solid fa-plus"></i></button>
       </div>
-      <p class="stock-note"><i class="fa-solid fa-circle-info"></i> Carrito de demostración. Consultar disponibilidad y condiciones comerciales.</p>
+      <p class="stock-note"><i class="fa-solid fa-circle-info"></i> Disponibilidad y condiciones comerciales sujetas a confirmación.</p>
     </div>
   `;
 
@@ -216,7 +219,7 @@ const renderCart = () => {
       <div class="empty-cart">
         <i class="fa-solid fa-bicycle"></i>
         <h2>Tu selección está vacía.</h2>
-        <p>Explorá las tres versiones Skin Red Sioux de esta maqueta.</p>
+        <p>Explorá las tres versiones Skin Red Sioux.</p>
         <a class="button button-accent" href="index.html#modelos">Ver modelos <i class="fa-solid fa-arrow-right"></i></a>
       </div>
     `;
@@ -277,6 +280,86 @@ const renderCart = () => {
   }));
 };
 
+const setupFinder = () => {
+  const form = document.querySelector("[data-finder-form]");
+  if (!form) return;
+
+  if (DEBUG && window.skinRedDebugDefaults) {
+    const { color, size } = window.skinRedDebugDefaults;
+    form.querySelector(`[name="color"][value="${color}"]`).checked = true;
+    form.querySelector(`[name="size"][value="${size}"]`).checked = true;
+  }
+
+  form.addEventListener("change", () => {
+    document.querySelector("[data-finder-result]").hidden = true;
+  });
+
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    const data = new FormData(form);
+    const product = PRODUCTS.find(item => item.id === data.get("color"));
+    const size = data.get("size");
+    if (!product || !["15", "17"].includes(size)) return;
+
+    const result = document.querySelector("[data-finder-result]");
+    result.innerHTML = `
+      <div class="finder-result-image">
+        <img src="${product.image}" alt="Skin Red ${product.name}">
+      </div>
+      <div class="finder-result-copy">
+        <p class="eyebrow dark">Tu elección</p>
+        <h3>${product.name}</h3>
+        <p>Rodado 27,5 · 21 velocidades · Talle ${size}</p>
+        <span class="finder-result-code">Código ${product.code}</span>
+        <div class="finder-result-actions">
+          <a class="button button-dark" href="producto.html?id=${product.id}&size=${size}">Ver detalles <i class="fa-solid fa-arrow-right"></i></a>
+          <button type="button" class="finder-add" data-finder-add>Agregar al carrito <i class="fa-solid fa-plus"></i></button>
+        </div>
+      </div>
+    `;
+    result.hidden = false;
+    result.querySelector("[data-finder-add]").addEventListener("click", () => addToCart(product.id, size));
+    result.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  });
+};
+
+const setupShareSelection = () => {
+  const button = document.querySelector("[data-share-selection]");
+  if (!button) return;
+
+  button.addEventListener("click", async () => {
+    const items = getCart().filter(item => PRODUCTS.some(product => product.id === item.id));
+    if (!items.length) return;
+
+    const lines = items.map(item => {
+      const product = PRODUCTS.find(entry => entry.id === item.id);
+      const url = new URL(`producto.html?id=${product.id}&size=${item.size}`, window.location.href);
+      return `${item.qty} × ${product.name} · Talle ${item.size} · ${product.code}\n${url}`;
+    });
+    const shareText = `Mi selección Skin Red:\n\n${lines.join("\n\n")}\n\nPrecios de lista + IVA.`;
+
+    const textArea = document.createElement("textarea");
+    textArea.value = shareText;
+    textArea.setAttribute("readonly", "");
+    textArea.style.position = "fixed";
+    textArea.style.opacity = "0";
+    document.body.appendChild(textArea);
+    textArea.select();
+    let copied = document.execCommand("copy");
+    textArea.remove();
+
+    if (!copied && navigator.clipboard?.writeText) {
+      try {
+        await navigator.clipboard.writeText(shareText);
+        copied = true;
+      } catch {
+        copied = false;
+      }
+    }
+    showToast(copied ? "Selección copiada para compartir" : "No se pudo copiar la selección");
+  });
+};
+
 const setupNavigation = () => {
   const menu = document.querySelector(".mobile-menu");
   const backdrop = document.querySelector(".menu-backdrop");
@@ -299,8 +382,8 @@ const setupNavigation = () => {
 
   const panel = document.querySelector(".search-panel");
   const closeSearch = () => {
-    panel.classList.remove("open");
-    panel.setAttribute("aria-hidden", "true");
+    panel?.classList.remove("open");
+    panel?.setAttribute("aria-hidden", "true");
   };
   document.querySelector(".search-toggle")?.addEventListener("click", () => {
     panel.classList.add("open");
@@ -347,7 +430,6 @@ document.addEventListener("DOMContentLoaded", () => {
   renderCart();
   setupNavigation();
   setupObserver();
-  document.querySelector(".checkout-button")?.addEventListener("click", () => {
-    showToast("Esta maqueta no procesa compras ni pagos.");
-  });
+  setupFinder();
+  setupShareSelection();
 });

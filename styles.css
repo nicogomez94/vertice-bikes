@@ -2001,15 +2001,15 @@ p {
 }
 
 .fardella-site .site-header {
-  height: 98px;
+  height: 78px;
   border-bottom: 1px solid var(--line);
   background: var(--paper);
   color: var(--ink);
 }
 
 .fardella-site .wordmark {
-  width: 86px;
-  height: 86px;
+  width: 68px;
+  height: 68px;
   display: grid;
   place-items: center;
   overflow: hidden;
@@ -2208,7 +2208,7 @@ p {
 
 @media (min-width: 850px) {
   .fardella-site .site-header {
-    height: 116px;
+    height: 86px;
   }
 
   .fardella-site .hero {
@@ -2222,8 +2222,8 @@ p {
   }
 
   .fardella-site .wordmark {
-    width: 110px;
-    height: 110px;
+    width: 78px;
+    height: 78px;
   }
 
   .fardella-site .footer-brand {
@@ -2257,7 +2257,7 @@ p {
 /* Fardella 1939 — portada cinematográfica y contenido institucional */
 .fardella-site .hero-cinematic {
   position: relative;
-  height: calc(100svh - 130px);
+  height: calc(100svh - 110px);
   min-height: 610px;
   max-height: 760px;
   display: block;
@@ -2279,7 +2279,8 @@ p {
   z-index: -2;
   object-fit: cover;
   object-position: 66% center;
-  animation: heroReveal 1.2s ease-out both;
+  animation: heroDrift 14s ease-in-out infinite alternate;
+  will-change: transform;
 }
 
 .hero-shade {
@@ -2302,15 +2303,26 @@ p {
 }
 
 .fardella-site .hero-cinematic .hero-copy::before {
-  top: 54px;
-  left: var(--pad);
-  width: 48px;
-  height: 3px;
+  display: none;
 }
 
-.fardella-site .hero-cinematic .eyebrow {
+.hero-kicker {
   margin-bottom: 23px;
-  padding-left: 70px;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+.hero-kicker > span {
+  width: 48px;
+  height: 3px;
+  flex: 0 0 auto;
+  background: var(--red-bright);
+}
+
+.fardella-site .hero-cinematic .hero-kicker .eyebrow {
+  margin: 0;
+  padding: 0;
   color: #fff;
   font-size: 10px;
 }
@@ -2405,18 +2417,48 @@ p {
 }
 
 .brand-card {
-  min-height: 205px;
+  min-height: 310px;
   padding: 28px 5px 28px 0;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  gap: 42px;
+  gap: 18px;
   border-bottom: 1px solid var(--line);
+}
+
+.brand-logo {
+  width: 100%;
+  height: 112px;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(19, 19, 21, .08);
+  background: rgba(255, 255, 255, .72);
+}
+
+.brand-logo img {
+  width: 80%;
+  height: 76px;
+  object-fit: contain;
+  mix-blend-mode: multiply;
+  transition: transform .35s ease;
+}
+
+.brand-card:hover .brand-logo img {
+  transform: scale(1.045);
+}
+
+.brand-logo img[alt="Shimano"] {
+  transform: scale(2.25);
+}
+
+.brand-card:hover .brand-logo img[alt="Shimano"] {
+  transform: scale(2.35);
 }
 
 .brand-name {
   font-family: var(--display);
-  font-size: 34px;
+  font-size: 26px;
   font-weight: 800;
   line-height: 1;
   letter-spacing: -.02em;
@@ -2501,15 +2543,13 @@ p {
   line-height: 1.7;
 }
 
-@keyframes heroReveal {
-  from {
-    opacity: .55;
-    transform: scale(1.035);
+@keyframes heroDrift {
+  0% {
+    transform: scale(1.025) translate3d(0, 0, 0);
   }
 
-  to {
-    opacity: 1;
-    transform: scale(1);
+  100% {
+    transform: scale(1.07) translate3d(-1.2%, .6%, 0);
   }
 }
 
@@ -2559,7 +2599,7 @@ p {
 
 @media (min-width: 850px) {
   .fardella-site .hero-cinematic {
-    height: calc(100svh - 148px);
+    height: calc(100svh - 118px);
     min-height: 540px;
     max-height: 820px;
   }
@@ -2624,8 +2664,12 @@ p {
     padding-bottom: 35px;
   }
 
-  .fardella-site .hero-cinematic .hero-copy::before {
-    top: 42px;
+  .hero-kicker {
+    gap: 13px;
+  }
+
+  .hero-kicker > span {
+    width: 34px;
   }
 
   .fardella-site .hero-cinematic .hero-description {

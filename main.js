@@ -252,9 +252,23 @@ const setupNavigation = () => {
   const menu = document.querySelector(".mobile-menu");
   const backdrop = document.querySelector(".menu-backdrop");
   const toggle = document.querySelector(".menu-toggle");
+  const mobileCatalog = document.querySelector(".mobile-catalog");
+  const mobileCatalogToggle = document.querySelector(".mobile-catalog-toggle");
+  const mobileCatalogPanel = document.querySelector(".mobile-catalog-panel");
+  const catalogDropdown = document.querySelector(".catalog-dropdown");
+  const catalogDropdownToggle = document.querySelector(".catalog-dropdown-toggle");
+  const catalogDropdownMenu = document.querySelector(".catalog-dropdown-menu");
+  const closeCatalogDropdown = () => {
+    catalogDropdown?.classList.remove("open");
+    catalogDropdownToggle?.setAttribute("aria-expanded", "false");
+    catalogDropdownMenu?.setAttribute("aria-hidden", "true");
+  };
   const closeMenu = () => {
     menu.classList.remove("open"); backdrop.classList.remove("open");
     menu.setAttribute("aria-hidden", "true"); toggle.setAttribute("aria-expanded", "false");
+    mobileCatalog?.classList.remove("open");
+    mobileCatalogToggle?.setAttribute("aria-expanded", "false");
+    mobileCatalogPanel?.setAttribute("aria-hidden", "true");
   };
   toggle.addEventListener("click", () => {
     menu.classList.add("open"); backdrop.classList.add("open");
@@ -262,6 +276,11 @@ const setupNavigation = () => {
   });
   document.querySelector(".menu-close").addEventListener("click", closeMenu);
   backdrop.addEventListener("click", closeMenu);
+  mobileCatalogToggle?.addEventListener("click", () => {
+    const open = mobileCatalog.classList.toggle("open");
+    mobileCatalogToggle.setAttribute("aria-expanded", String(open));
+    mobileCatalogPanel.setAttribute("aria-hidden", String(!open));
+  });
   menu.querySelectorAll("a").forEach(link => link.addEventListener("click", event => {
     const href = link.getAttribute("href");
     const target = href?.startsWith("#") ? document.querySelector(href) : null;
@@ -272,6 +291,16 @@ const setupNavigation = () => {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
     }
   }));
+  catalogDropdownToggle?.addEventListener("click", event => {
+    event.stopPropagation();
+    const open = catalogDropdown.classList.toggle("open");
+    catalogDropdownToggle.setAttribute("aria-expanded", String(open));
+    catalogDropdownMenu.setAttribute("aria-hidden", String(!open));
+  });
+  catalogDropdownMenu?.querySelectorAll("a").forEach(link => link.addEventListener("click", closeCatalogDropdown));
+  document.addEventListener("click", event => {
+    if (catalogDropdown && !catalogDropdown.contains(event.target)) closeCatalogDropdown();
+  });
   const panel = document.querySelector(".search-panel");
   const closeSearch = () => { panel?.classList.remove("open"); panel?.setAttribute("aria-hidden", "true"); };
   document.querySelector(".search-toggle")?.addEventListener("click", () => {
@@ -285,7 +314,7 @@ const setupNavigation = () => {
       ? matches.map(p => `<a href="producto.html?id=${p.id}">${p.name} <i class="fa-solid fa-arrow-right"></i></a>`).join("")
       : value ? "<span>No encontramos coincidencias.</span>" : "";
   });
-  document.addEventListener("keydown", event => { if (event.key === "Escape") { closeMenu(); closeSearch(); } });
+  document.addEventListener("keydown", event => { if (event.key === "Escape") { closeMenu(); closeSearch(); closeCatalogDropdown(); } });
 };
 
 const setupObserver = () => {

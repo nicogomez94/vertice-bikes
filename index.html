@@ -10,19 +10,59 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700;800&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-  <link rel="stylesheet" href="styles.css?v=20261104b">
+  <link rel="stylesheet" href="styles.css?v=20261104c">
 </head>
 <body class="fardella-site">
   <div class="announcement"><span>FARDELLA S.A.</span><span>Distribuidor mayorista desde 1939</span><span>Envíos a todo el país</span></div>
   <header class="site-header">
     <button class="icon-button menu-toggle" aria-label="Abrir menú" aria-expanded="false"><span></span><span></span></button>
     <a class="wordmark" href="index.html" aria-label="Fardella S.A., inicio"><img src="assets/images/fardella/logo-fardella-official.png" alt="Fardella S.A."></a>
-    <nav class="desktop-nav" aria-label="Navegación principal"><a href="#categorias">Categorías</a><a href="#productos">Productos</a><a href="#marcas">Marcas</a><a href="#consulta">Consultá</a></nav>
+    <nav class="desktop-nav" aria-label="Navegación principal">
+      <a href="#categorias">Categorías</a>
+      <div class="catalog-dropdown">
+        <button class="catalog-dropdown-toggle" type="button" aria-expanded="false" aria-controls="catalog-dropdown-menu">
+          Productos <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="catalog-dropdown-menu" id="catalog-dropdown-menu" aria-hidden="true">
+          <div class="catalog-dropdown-heading">
+            <span>Catálogo Fardella</span>
+            <strong>Elegí por tipo de producto</strong>
+          </div>
+          <div class="catalog-dropdown-grid">
+            <a href="#productos" data-category-link="bicicletas"><i class="fa-solid fa-bicycle"></i><span><strong>Bicicletas</strong><small>Urbanas y mountain bike</small></span></a>
+            <a href="#productos" data-category-link="repuestos"><i class="fa-solid fa-circle-notch"></i><span><strong>Cubiertas y cámaras</strong><small>Distintos rodados y usos</small></span></a>
+            <a href="#productos" data-category-link="repuestos"><i class="fa-solid fa-gears"></i><span><strong>Transmisión y componentes</strong><small>Repuestos para cada bicicleta</small></span></a>
+            <a href="#productos" data-category-link="accesorios"><i class="fa-solid fa-helmet-safety"></i><span><strong>Accesorios</strong><small>Cascos, guantes, gafas y más</small></span></a>
+          </div>
+          <a class="catalog-dropdown-all" href="#productos" data-category-link="todos">Ver todo el catálogo <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+      </div>
+      <a href="#marcas">Marcas</a>
+      <a href="#consulta">Consultá</a>
+    </nav>
     <div class="header-actions"><button class="icon-button search-toggle" aria-label="Buscar"><i class="fa-solid fa-magnifying-glass"></i></button><a class="icon-button cart-link" href="carrito.html" aria-label="Ver selección"><i class="fa-solid fa-bag-shopping"></i><span class="cart-count" data-cart-count>0</span></a></div>
   </header>
   <aside class="mobile-menu" aria-hidden="true">
     <div class="mobile-menu-top"><span>MENÚ</span><button class="icon-button menu-close" aria-label="Cerrar menú"><i class="fa-solid fa-xmark"></i></button></div>
-    <nav><a href="#categorias">Categorías</a><a href="#productos">Productos</a><a href="#marcas">Marcas</a><a href="#elegirnos">Por qué elegirnos</a><a href="#consulta">Consultá</a><a href="#contacto">Contacto</a></nav>
+    <nav>
+      <a href="#categorias">Categorías</a>
+      <div class="mobile-catalog">
+        <button class="mobile-catalog-toggle" type="button" aria-expanded="false" aria-controls="mobile-catalog-panel">
+          Productos <i class="fa-solid fa-chevron-down"></i>
+        </button>
+        <div class="mobile-catalog-panel" id="mobile-catalog-panel" aria-hidden="true">
+          <a href="#productos" data-category-link="bicicletas"><i class="fa-solid fa-bicycle"></i> Bicicletas</a>
+          <a href="#productos" data-category-link="repuestos"><i class="fa-solid fa-circle-notch"></i> Cubiertas y cámaras</a>
+          <a href="#productos" data-category-link="repuestos"><i class="fa-solid fa-gears"></i> Transmisión y componentes</a>
+          <a href="#productos" data-category-link="accesorios"><i class="fa-solid fa-helmet-safety"></i> Accesorios</a>
+          <a href="#productos" data-category-link="todos"><i class="fa-solid fa-border-all"></i> Ver todo</a>
+        </div>
+      </div>
+      <a href="#marcas">Marcas</a>
+      <a href="#elegirnos">Por qué elegirnos</a>
+      <a href="#consulta">Consultá</a>
+      <a href="#contacto">Contacto</a>
+    </nav>
     <p>Todo para disfrutar del ciclismo.</p>
   </aside>
   <div class="menu-backdrop"></div>
@@ -192,6 +232,6 @@
     <div class="footer-credit">Hecho por <a href="https://zigodev.com.ar" target="_blank" rel="noopener noreferrer">zigodev</a></div>
   </footer>
   <div class="toast" role="status" aria-live="polite"></div>
-  <script src="main.js?v=20261104"></script>
+  <script src="main.js?v=20261104c"></script>
 </body>
 </html>

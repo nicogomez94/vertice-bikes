@@ -3056,3 +3056,221 @@ p {
     animation: none;
   }
 }
+
+/* Menú de familias de producto */
+.catalog-dropdown {
+  position: relative;
+}
+
+.catalog-dropdown-toggle {
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  border: 0;
+  background: transparent;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  cursor: pointer;
+}
+
+.catalog-dropdown-toggle i {
+  color: var(--red-bright);
+  font-size: 8px;
+  transition: transform .25s ease;
+}
+
+.catalog-dropdown.open .catalog-dropdown-toggle i {
+  transform: rotate(180deg);
+}
+
+.catalog-dropdown-menu {
+  position: absolute;
+  top: calc(100% + 30px);
+  left: -18px;
+  z-index: 10;
+  width: min(680px, calc(100vw - (var(--pad) * 2)));
+  padding: 27px 30px 22px;
+  border-top: 3px solid var(--red-bright);
+  background: rgba(255, 253, 250, .97);
+  color: var(--ink);
+  box-shadow: 0 24px 55px rgba(2, 14, 24, .2);
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.catalog-dropdown-menu::before {
+  position: absolute;
+  right: 0;
+  bottom: 100%;
+  left: 0;
+  height: 30px;
+  content: "";
+}
+
+.catalog-dropdown.open .catalog-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.catalog-dropdown-heading {
+  margin-bottom: 21px;
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 20px;
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 16px;
+}
+
+.catalog-dropdown-heading span {
+  color: var(--red);
+  font-size: 8px;
+  font-weight: 800;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.catalog-dropdown-heading strong {
+  font-family: var(--display);
+  font-size: 20px;
+  text-transform: uppercase;
+}
+
+.catalog-dropdown-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 8px 28px;
+}
+
+.desktop-nav .catalog-dropdown-grid a {
+  padding: 14px 0;
+  display: grid;
+  grid-template-columns: 30px 1fr;
+  align-items: start;
+  gap: 12px;
+  border-bottom: 1px solid rgba(36, 34, 32, .1);
+  color: var(--ink);
+}
+
+.desktop-nav .catalog-dropdown-grid a:hover {
+  color: var(--red);
+}
+
+.catalog-dropdown-grid a > i {
+  padding-top: 2px;
+  color: var(--red-bright);
+  font-size: 15px;
+}
+
+.catalog-dropdown-grid a span {
+  display: grid;
+  gap: 4px;
+}
+
+.catalog-dropdown-grid a strong {
+  font-size: 10px;
+  letter-spacing: .02em;
+}
+
+.catalog-dropdown-grid a small {
+  color: var(--muted);
+  font-size: 9px;
+  font-weight: 500;
+}
+
+.desktop-nav .catalog-dropdown-all {
+  margin-top: 18px;
+  display: flex;
+  justify-content: space-between;
+  color: var(--red);
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+
+.mobile-menu {
+  overflow-y: auto;
+}
+
+.mobile-menu nav {
+  margin: 70px 0 35px;
+}
+
+.mobile-catalog-toggle {
+  width: 100%;
+  padding: 16px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border: 0;
+  border-bottom: 1px solid rgba(255, 255, 255, .18);
+  background: transparent;
+  color: inherit;
+  font-family: var(--display);
+  font-size: 37px;
+  font-weight: 700;
+  text-align: left;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+
+.mobile-catalog-toggle i {
+  margin-right: 4px;
+  color: #f04450;
+  font-size: 13px;
+  transition: transform .3s ease;
+}
+
+.mobile-catalog.open .mobile-catalog-toggle i {
+  transform: rotate(180deg);
+}
+
+.mobile-catalog-panel {
+  max-height: 0;
+  overflow: hidden;
+  background: rgba(255, 255, 255, .04);
+  transition: max-height .35s ease;
+}
+
+.mobile-catalog.open .mobile-catalog-panel {
+  max-height: 300px;
+}
+
+.mobile-menu nav .mobile-catalog-panel a {
+  padding: 12px 8px 12px 18px;
+  display: flex;
+  align-items: center;
+  gap: 13px;
+  border-bottom-color: rgba(255, 255, 255, .1);
+  color: #cfcbc8;
+  font-family: var(--body);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  text-transform: none;
+}
+
+.mobile-catalog-panel a i {
+  width: 18px;
+  color: #f04450;
+  text-align: center;
+}
+
+@media (max-width: 390px) {
+  .mobile-catalog-toggle,
+  .mobile-menu nav > a {
+    font-size: 33px;
+  }
+
+  .mobile-menu nav {
+    margin-top: 52px;
+  }
+}

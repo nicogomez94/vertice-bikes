@@ -262,7 +262,16 @@ const setupNavigation = () => {
   });
   document.querySelector(".menu-close").addEventListener("click", closeMenu);
   backdrop.addEventListener("click", closeMenu);
-  menu.querySelectorAll("a").forEach(link => link.addEventListener("click", closeMenu));
+  menu.querySelectorAll("a").forEach(link => link.addEventListener("click", event => {
+    const href = link.getAttribute("href");
+    const target = href?.startsWith("#") ? document.querySelector(href) : null;
+    closeMenu();
+    if (target) {
+      event.preventDefault();
+      history.replaceState(null, "", href);
+      target.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+  }));
   const panel = document.querySelector(".search-panel");
   const closeSearch = () => { panel?.classList.remove("open"); panel?.setAttribute("aria-hidden", "true"); };
   document.querySelector(".search-toggle")?.addEventListener("click", () => {
@@ -288,7 +297,63 @@ const setupObserver = () => {
   elements.forEach(el => observer.observe(el));
 };
 
+const setupHeroCarousel = () => {
+  const slides = [...document.querySelectorAll("[data-hero-slide]")];
+  const controls = [...document.querySelectorAll("[data-hero-go]")];
+  if (slides.length < 2) return;
+  let current = 0;
+  let timer;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const showSlide = index => {
+    current = (index + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => slide.classList.toggle("active", slideIndex === current));
+    controls.forEach((control, controlIndex) => {
+      const active = controlIndex === current;
+      control.classList.toggle("active", active);
+      control.setAttribute("aria-pressed", String(active));
+    });
+  };
+  const start = () => {
+    clearInterval(timer);
+    if (!reducedMotion.matches && !document.hidden) {
+      timer = setInterval(() => showSlide(current + 1), 4300);
+    }
+  };
+  controls.forEach(control => control.addEventListener("click", () => {
+    showSlide(Number(control.dataset.heroGo));
+    start();
+  }));
+  document.addEventListener("visibilitychange", start);
+  reducedMotion.addEventListener?.("change", start);
+  showSlide(0);
+  start();
+};
+
+const setupInquiryForm = () => {
+  const form = document.querySelector("[data-inquiry-form]");
+  if (!form) return;
+  const status = form.querySelector("[data-form-status]");
+  form.addEventListener("submit", event => {
+    event.preventDefault();
+    if (!form.reportValidity()) return;
+    const data = new FormData(form);
+    const subject = `Consulta web · ${data.get("interes")}`;
+    const body = [
+      `Nombre: ${data.get("nombre")}`,
+      `Comercio: ${data.get("comercio") || "No indicado"}`,
+      `Email: ${data.get("email")}`,
+      `Teléfono: ${data.get("telefono") || "No indicado"}`,
+      `Interés: ${data.get("interes")}`,
+      "",
+      "Consulta:",
+      data.get("mensaje")
+    ].join("\n");
+    status.textContent = "Listo: abrimos tu correo con la consulta completa para que puedas revisarla y enviarla.";
+    window.location.href = `mailto:info@fardella.com.ar?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   updateCartCount(); renderCatalog(); renderProductPage(); renderCart();
-  setupNavigation(); setupObserver(); setupShareSelection();
+  setupNavigation(); setupObserver(); setupShareSelection(); setupHeroCarousel(); setupInquiryForm();
 });

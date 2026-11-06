@@ -265,7 +265,7 @@ chmod 640 "$APP_DIR/wp-config.php"
 
 echo "== Smoke tests =="
 curl -fsSI "https://$DOMAIN/" >/dev/null
-curl -fsS "https://$DOMAIN/wp-json/" | head -c 120 >/dev/null
+curl -fsS -o /dev/null "https://$DOMAIN/wp-json/"
 curl -fsSI "https://$DOMAIN/wp-admin/" >/dev/null
 $WP core is-installed
 $WP plugin is-active woocommerce

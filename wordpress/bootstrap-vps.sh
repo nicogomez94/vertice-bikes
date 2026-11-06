@@ -130,6 +130,11 @@ $WP option delete rewrite_rules || true
 $WP option update woocommerce_currency ARS
 $WP option update woocommerce_default_country 'AR:B'
 $WP option update woocommerce_currency_pos left_space
+$WP option update woocommerce_price_decimal_sep ','
+$WP option update woocommerce_price_thousand_sep '.'
+$WP option update woocommerce_price_num_decimals 2
+$WP option update woocommerce_registration_privacy_policy_text 'Usaremos tus datos para gestionar el acceso a tu cuenta mayorista y mejorar tu experiencia en el sitio.'
+$WP option update woocommerce_checkout_privacy_policy_text 'Usaremos tus datos para procesar el pedido, coordinar disponibilidad, pago y entrega, y brindarte atención comercial.'
 $WP option update woocommerce_enable_myaccount_registration yes
 $WP option update woocommerce_enable_guest_checkout yes
 $WP option update fardella_wholesale_email "$ADMIN_EMAIL"

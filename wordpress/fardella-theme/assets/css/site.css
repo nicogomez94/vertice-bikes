@@ -4337,6 +4337,24 @@ p {
   color: #fff;
 }
 
+.woocommerce a.button.alt,
+.woocommerce button.button.alt,
+.woocommerce input.button.alt,
+.woocommerce #payment #place_order,
+.woocommerce-page #payment #place_order {
+  border-color: var(--red-bright) !important;
+  background: var(--red-bright) !important;
+  color: #fff !important;
+}
+
+.woocommerce a.button.alt:hover,
+.woocommerce button.button.alt:hover,
+.woocommerce input.button.alt:hover,
+.woocommerce #payment #place_order:hover,
+.woocommerce-page #payment #place_order:hover {
+  background: var(--red) !important;
+}
+
 .woocommerce div.product {
   display: flow-root;
 }

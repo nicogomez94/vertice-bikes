@@ -3102,6 +3102,8 @@ p {
   transition: opacity .2s ease, transform .2s ease, visibility .2s;
   backdrop-filter: blur(18px);
   -webkit-backdrop-filter: blur(18px);
+  max-height: calc(100vh - 145px);
+  overflow-y: auto;
 }
 
 .catalog-dropdown-menu::before {
@@ -3145,7 +3147,7 @@ p {
 
 .catalog-dropdown-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 8px 28px;
 }
 

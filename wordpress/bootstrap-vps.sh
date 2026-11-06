@@ -319,6 +319,7 @@ rsync -a --delete "$REPO_DIR/wordpress/$THEME_NAME/" "$APP_DIR/wp-content/themes
 chown -R root:www-data "$APP_DIR/wp-content/themes/$THEME_NAME"
 find "$APP_DIR/wp-content/themes/$THEME_NAME" -type d -exec chmod 775 {} +
 find "$APP_DIR/wp-content/themes/$THEME_NAME" -type f -exec chmod 664 {} +
+sudo -u www-data wp --path="$APP_DIR" eval 'fardella_seed_catalog();'
 sudo -u www-data wp --path="$APP_DIR" cache flush || true
 nginx -t
 systemctl reload php8.3-fpm

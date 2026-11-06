@@ -1,6 +1,6 @@
 <?php
 /**
- * Catálogo inicial basado en la maqueta aprobada.
+ * Importador idempotente del catálogo Fardella de septiembre de 2026.
  *
  * @package Fardella
  */
@@ -9,130 +9,169 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
+function fardella_catalog_group( $category_slug ) {
+	if ( 'bicicletas-y-cuadros' === $category_slug ) {
+		return 'bicicletas';
+	}
+
+	if ( in_array( $category_slug, array( 'accesorios', 'gafas', 'guantes' ), true ) ) {
+		return 'accesorios';
+	}
+
+	return 'repuestos';
+}
+
+function fardella_catalog_brand( $name ) {
+	$brands = array( 'Shimano', 'Hutchinson', 'Battle', 'Philco', 'Skin Red', 'Sunrace', 'KMC', 'Kenli', 'Neco' );
+	foreach ( $brands as $brand ) {
+		if ( false !== stripos( $name, $brand ) ) {
+			return $brand;
+		}
+	}
+	return 'Fardella';
+}
+
+function fardella_catalog_data() {
+	$source = get_template_directory() . '/inc/catalog.json';
+	if ( ! file_exists( $source ) ) {
+		return new WP_Error( 'catalog_missing', 'No se encontró inc/catalog.json.' );
+	}
+
+	$data = json_decode( file_get_contents( $source ), true ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	if ( ! is_array( $data ) || 137 !== count( $data ) ) {
+		return new WP_Error( 'catalog_invalid', 'El catálogo debe contener exactamente 137 artículos.' );
+	}
+	return $data;
+}
+
+function fardella_catalog_term( $name, $slug, $parent = 0 ) {
+	$existing = term_exists( $slug, 'product_cat' );
+	if ( $existing ) {
+		return (int) ( is_array( $existing ) ? $existing['term_id'] : $existing );
+	}
+
+	$created = wp_insert_term(
+		$name,
+		'product_cat',
+		array(
+			'slug'   => $slug,
+			'parent' => $parent,
+		)
+	);
+	return is_wp_error( $created ) ? 0 : (int) $created['term_id'];
+}
+
+function fardella_catalog_image( $product_id, $item ) {
+	if ( get_post_thumbnail_id( $product_id ) ) {
+		return;
+	}
+
+	$source = get_template_directory() . '/assets/images/catalogo/' . $item['image'];
+	if ( ! file_exists( $source ) ) {
+		return;
+	}
+
+	require_once ABSPATH . 'wp-admin/includes/file.php';
+	require_once ABSPATH . 'wp-admin/includes/media.php';
+	require_once ABSPATH . 'wp-admin/includes/image.php';
+	$upload = wp_upload_bits( $item['image'], null, file_get_contents( $source ) ); // phpcs:ignore WordPress.WP.AlternativeFunctions.file_get_contents_file_get_contents
+	if ( ! empty( $upload['error'] ) ) {
+		return;
+	}
+
+	$filetype      = wp_check_filetype( $upload['file'], null );
+	$attachment_id = wp_insert_attachment(
+		array(
+			'post_mime_type' => $filetype['type'],
+			'post_title'     => $item['name'],
+			'post_status'    => 'inherit',
+		),
+		$upload['file'],
+		$product_id
+	);
+	if ( is_wp_error( $attachment_id ) ) {
+		return;
+	}
+
+	$metadata = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
+	wp_update_attachment_metadata( $attachment_id, $metadata );
+	set_post_thumbnail( $product_id, $attachment_id );
+}
+
 function fardella_seed_catalog() {
 	if ( ! class_exists( 'WooCommerce' ) ) {
 		return new WP_Error( 'woocommerce_missing', 'WooCommerce debe estar activo.' );
 	}
 
-	$categories = array(
+	$items = fardella_catalog_data();
+	if ( is_wp_error( $items ) ) {
+		return $items;
+	}
+
+	$groups = array(
 		'bicicletas' => 'Bicicletas',
 		'repuestos'  => 'Repuestos',
 		'accesorios' => 'Accesorios',
 	);
-
-	foreach ( $categories as $slug => $name ) {
-		if ( ! term_exists( $slug, 'product_cat' ) ) {
-			wp_insert_term( $name, 'product_cat', array( 'slug' => $slug ) );
-		}
+	$group_ids = array();
+	foreach ( $groups as $slug => $name ) {
+		$group_ids[ $slug ] = fardella_catalog_term( $name, $slug );
 	}
 
-	$products = array(
-		array(
-			'name'        => 'Sicilia Dama R28',
-			'slug'        => 'sicilia-dama-r28',
-			'sku'         => 'BICSICILIA28DN',
-			'category'    => 'bicicletas',
-			'type'        => 'Bicicleta urbana',
-			'brand'       => 'Battle / Philco',
-			'wholesale'   => '156198.35',
-			'image'       => 'sicilia-negra.jpg',
-			'description' => 'Bicicleta de paseo Sicilia Dama rodado 28, de una velocidad, con guardabarros y portapaquete. Terminación negra.',
-		),
-		array(
-			'name'        => 'Battle R29 24v',
-			'slug'        => 'battle-r29-24v',
-			'sku'         => 'BICBATTLE2924GR',
-			'category'    => 'bicicletas',
-			'type'        => 'Bicicleta MTB',
-			'brand'       => 'Battle',
-			'wholesale'   => '289256.20',
-			'image'       => 'battle-gris.jpg',
-			'description' => 'Bicicleta Battle rodado 29 con 24 velocidades, frenos hidráulicos, suspensión Suntour con bloqueo y transmisión Microshift.',
-		),
-		array(
-			'name'        => 'Cubierta Cobra R29',
-			'slug'        => 'cubierta-cobra-r29',
-			'sku'         => 'PV699992',
-			'category'    => 'repuestos',
-			'type'        => 'Cubierta',
-			'brand'       => 'Hutchinson',
-			'wholesale'   => '38603.31',
-			'image'       => 'cubierta-cobra.jpg',
-			'description' => 'Cubierta Hutchinson Cobra rodado 29 × 2.10, construcción de 127 TPI.',
-		),
-		array(
-			'name'        => 'Gafas Flash Azul',
-			'slug'        => 'gafas-flash-azul',
-			'sku'         => 'X1917230496',
-			'category'    => 'accesorios',
-			'type'        => 'Gafas',
-			'brand'       => 'Accesorios',
-			'wholesale'   => '14834.00',
-			'image'       => 'gafas-flash.jpg',
-			'description' => 'Gafas Flash en color azul, incluidas en la selección de accesorios del catálogo.',
-		),
-		array(
-			'name'        => 'Guante Power Negro',
-			'slug'        => 'guante-power-negro',
-			'sku'         => 'X20122201005',
-			'category'    => 'accesorios',
-			'type'        => 'Guantes',
-			'brand'       => 'Accesorios',
-			'wholesale'   => '9257.12',
-			'image'       => 'guante-power.jpg',
-			'description' => 'Guante Power negro, disponible en talles M, L, XL y XXL según el catálogo.',
-		),
-	);
+	$category_ids = array();
+	foreach ( $items as $item ) {
+		$category_slug = sanitize_title( $item['category_slug'] );
+		if ( isset( $category_ids[ $category_slug ] ) ) {
+			continue;
+		}
+		$group                          = fardella_catalog_group( $category_slug );
+		$category_ids[ $category_slug ] = fardella_catalog_term(
+			$item['category'],
+			$category_slug,
+			$group_ids[ $group ]
+		);
+	}
 
-	foreach ( $products as $item ) {
+	foreach ( $items as $position => $item ) {
 		$existing = wc_get_product_id_by_sku( $item['sku'] );
 		$product  = $existing ? wc_get_product( $existing ) : new WC_Product_Simple();
+		if ( ! $product ) {
+			continue;
+		}
 
+		$description = sprintf(
+			'%1$s. Código de artículo: %2$s. Precio mayorista de lista más IVA, según catálogo Fardella de septiembre de 2026.',
+			$item['name'],
+			$item['sku']
+		);
 		$product->set_name( $item['name'] );
 		$product->set_slug( $item['slug'] );
-		$product->set_sku( $item['sku'] );
-		$product->set_description( $item['description'] );
-		$product->set_short_description( $item['description'] );
+		if ( ! $existing ) {
+			$product->set_sku( $item['sku'] );
+		}
+		$product->set_description( $description );
+		$product->set_short_description( $item['name'] );
 		$product->set_status( 'publish' );
 		$product->set_catalog_visibility( 'visible' );
+		$product->set_menu_order( (int) $position );
 		$product->set_manage_stock( false );
 		$product->set_stock_status( 'instock' );
-		$product->update_meta_data( '_fardella_wholesale_price', $item['wholesale'] );
-		$product->update_meta_data( '_fardella_type', $item['type'] );
-		$product->update_meta_data( '_fardella_brand', $item['brand'] );
+		$product->set_regular_price( wc_format_decimal( $item['wholesale'] ) );
+		$product->update_meta_data( '_fardella_wholesale_price', wc_format_decimal( $item['wholesale'] ) );
+		$product->update_meta_data( '_fardella_type', $item['category'] );
+		$product->update_meta_data( '_fardella_brand', fardella_catalog_brand( $item['name'] ) );
+		$product->update_meta_data( '_fardella_group', fardella_catalog_group( sanitize_title( $item['category_slug'] ) ) );
+		$product->update_meta_data( '_fardella_catalog_page', (int) $item['page'] );
 		$product_id = $product->save();
 
-		$term = get_term_by( 'slug', $item['category'], 'product_cat' );
-		if ( $term ) {
-			wp_set_object_terms( $product_id, array( (int) $term->term_id ), 'product_cat' );
+		$category_id = $category_ids[ sanitize_title( $item['category_slug'] ) ] ?? 0;
+		if ( $category_id ) {
+			wp_set_object_terms( $product_id, array( $category_id ), 'product_cat' );
 		}
-
-		if ( ! get_post_thumbnail_id( $product_id ) ) {
-			$source = get_template_directory() . '/assets/images/fardella/' . $item['image'];
-			if ( file_exists( $source ) ) {
-				require_once ABSPATH . 'wp-admin/includes/file.php';
-				require_once ABSPATH . 'wp-admin/includes/media.php';
-				require_once ABSPATH . 'wp-admin/includes/image.php';
-				$upload = wp_upload_bits( $item['image'], null, file_get_contents( $source ) );
-				if ( empty( $upload['error'] ) ) {
-					$filetype      = wp_check_filetype( $upload['file'], null );
-					$attachment_id = wp_insert_attachment(
-						array(
-							'post_mime_type' => $filetype['type'],
-							'post_title'     => $item['name'],
-							'post_status'    => 'inherit',
-						),
-						$upload['file'],
-						$product_id
-					);
-					$metadata = wp_generate_attachment_metadata( $attachment_id, $upload['file'] );
-					wp_update_attachment_metadata( $attachment_id, $metadata );
-					set_post_thumbnail( $product_id, $attachment_id );
-				}
-			}
-		}
+		fardella_catalog_image( $product_id, $item );
 	}
 
-	return count( $products );
+	delete_transient( 'wc_term_counts' );
+	wc_delete_product_transients();
+	return count( $items );
 }
-

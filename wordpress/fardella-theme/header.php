@@ -11,6 +11,15 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $theme_uri  = get_template_directory_uri();
 $cart_count = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_contents_count() : 0;
+$catalog_categories = array();
+if ( function_exists( 'fardella_catalog_data' ) ) {
+	$catalog_items = fardella_catalog_data();
+	if ( ! is_wp_error( $catalog_items ) ) {
+		foreach ( $catalog_items as $catalog_item ) {
+			$catalog_categories[ $catalog_item['category_slug'] ] = $catalog_item['category'];
+		}
+	}
+}
 ?>
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
@@ -38,12 +47,11 @@ $cart_count = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_conte
 			<div class="catalog-dropdown-menu" id="catalog-dropdown-menu" aria-hidden="true">
 				<div class="catalog-dropdown-heading"><span>Catálogo Fardella</span><strong>Elegí por tipo de producto</strong></div>
 				<div class="catalog-dropdown-grid">
-					<a href="<?php echo esc_url( home_url( '/?categoria=bicicletas#productos' ) ); ?>"><i class="fa-solid fa-bicycle"></i><span><strong>Bicicletas</strong><small>Urbanas y mountain bike</small></span></a>
-					<a href="<?php echo esc_url( home_url( '/?categoria=repuestos#productos' ) ); ?>"><i class="fa-solid fa-circle-notch"></i><span><strong>Cubiertas y cámaras</strong><small>Distintos rodados y usos</small></span></a>
-					<a href="<?php echo esc_url( home_url( '/?categoria=repuestos#productos' ) ); ?>"><i class="fa-solid fa-gears"></i><span><strong>Transmisión y componentes</strong><small>Repuestos para cada bicicleta</small></span></a>
-					<a href="<?php echo esc_url( home_url( '/?categoria=accesorios#productos' ) ); ?>"><i class="fa-solid fa-helmet-safety"></i><span><strong>Accesorios</strong><small>Cascos, guantes, gafas y más</small></span></a>
+					<?php foreach ( $catalog_categories as $category_slug => $category_name ) : ?>
+						<a href="<?php echo esc_url( home_url( '/product-category/' . $category_slug . '/' ) ); ?>"><i class="fa-solid fa-angle-right"></i><span><strong><?php echo esc_html( $category_name ); ?></strong><small>Ver productos</small></span></a>
+					<?php endforeach; ?>
 				</div>
-				<a class="catalog-dropdown-all" href="<?php echo esc_url( home_url( '/#productos' ) ); ?>">Ver todo el catálogo <i class="fa-solid fa-arrow-right"></i></a>
+				<a class="catalog-dropdown-all" href="<?php echo esc_url( home_url( '/tienda/' ) ); ?>">Ver los 137 artículos <i class="fa-solid fa-arrow-right"></i></a>
 			</div>
 		</div>
 		<a href="<?php echo esc_url( home_url( '/#marcas' ) ); ?>">Marcas</a>
@@ -62,11 +70,10 @@ $cart_count = function_exists( 'WC' ) && WC()->cart ? WC()->cart->get_cart_conte
 		<div class="mobile-catalog">
 			<button class="mobile-catalog-toggle" type="button" aria-expanded="false" aria-controls="mobile-catalog-panel">Productos <i class="fa-solid fa-chevron-down"></i></button>
 			<div class="mobile-catalog-panel" id="mobile-catalog-panel" aria-hidden="true">
-				<a href="<?php echo esc_url( home_url( '/?categoria=bicicletas#productos' ) ); ?>"><i class="fa-solid fa-bicycle"></i> Bicicletas</a>
-				<a href="<?php echo esc_url( home_url( '/?categoria=repuestos#productos' ) ); ?>"><i class="fa-solid fa-circle-notch"></i> Cubiertas y cámaras</a>
-				<a href="<?php echo esc_url( home_url( '/?categoria=repuestos#productos' ) ); ?>"><i class="fa-solid fa-gears"></i> Transmisión y componentes</a>
-				<a href="<?php echo esc_url( home_url( '/?categoria=accesorios#productos' ) ); ?>"><i class="fa-solid fa-helmet-safety"></i> Accesorios</a>
-				<a href="<?php echo esc_url( home_url( '/#productos' ) ); ?>"><i class="fa-solid fa-border-all"></i> Ver todo</a>
+				<?php foreach ( $catalog_categories as $category_slug => $category_name ) : ?>
+					<a href="<?php echo esc_url( home_url( '/product-category/' . $category_slug . '/' ) ); ?>"><i class="fa-solid fa-angle-right"></i> <?php echo esc_html( $category_name ); ?></a>
+				<?php endforeach; ?>
+				<a href="<?php echo esc_url( home_url( '/tienda/' ) ); ?>"><i class="fa-solid fa-border-all"></i> Ver los 137 artículos</a>
 			</div>
 		</div>
 		<a href="<?php echo esc_url( home_url( '/#marcas' ) ); ?>">Marcas</a>

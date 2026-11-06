@@ -54,9 +54,9 @@ $u = get_template_directory_uri();
 	<section class="categories section-pad" id="categorias">
 		<div class="section-heading fade-in"><div><p class="eyebrow dark">Explorá Fardella</p><h2>Más que<br><em>bicicletas.</em></h2></div><p>Una selección del catálogo para equipar cada salida, desde la bicicleta completa hasta los detalles que hacen la diferencia.</p></div>
 		<div class="category-grid">
-			<a class="category-card" href="<?php echo esc_url( home_url( '/?categoria=bicicletas#productos' ) ); ?>"><i class="fa-solid fa-bicycle"></i><h3>Bicicletas</h3><p>Opciones urbanas y MTB.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
-			<a class="category-card" href="<?php echo esc_url( home_url( '/?categoria=repuestos#productos' ) ); ?>"><i class="fa-solid fa-gears"></i><h3>Repuestos</h3><p>Cámaras, cubiertas y transmisión.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
-			<a class="category-card" href="<?php echo esc_url( home_url( '/?categoria=accesorios#productos' ) ); ?>"><i class="fa-solid fa-glasses"></i><h3>Accesorios</h3><p>Guantes, gafas y más.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
+			<a class="category-card" href="<?php echo esc_url( home_url( '/product-category/bicicletas/' ) ); ?>"><i class="fa-solid fa-bicycle"></i><h3>Bicicletas</h3><p>Opciones urbanas y MTB.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
+			<a class="category-card" href="<?php echo esc_url( home_url( '/product-category/repuestos/' ) ); ?>"><i class="fa-solid fa-gears"></i><h3>Repuestos</h3><p>Cámaras, cubiertas y transmisión.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
+			<a class="category-card" href="<?php echo esc_url( home_url( '/product-category/accesorios/' ) ); ?>"><i class="fa-solid fa-glasses"></i><h3>Accesorios</h3><p>Guantes, gafas y más.</p><span>Ver productos <i class="fa-solid fa-arrow-right"></i></span></a>
 		</div>
 	</section>
 
@@ -83,7 +83,7 @@ $u = get_template_directory_uri();
 				$catalog->the_post();
 				$product  = wc_get_product( get_the_ID() );
 				$terms    = wp_get_post_terms( get_the_ID(), 'product_cat' );
-				$category = $terms ? $terms[0]->slug : 'otros';
+				$category = $product->get_meta( '_fardella_group', true ) ?: 'otros';
 				$type     = $product->get_meta( '_fardella_type', true ) ?: 'Producto';
 				$brand    = $product->get_meta( '_fardella_brand', true ) ?: 'Fardella';
 				?>

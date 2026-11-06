@@ -68,7 +68,7 @@ SQL
 
 echo "== Instalando WordPress core en webroot nuevo =="
 if [ ! -d "$APP_DIR/wp-admin" ] || [ ! -d "$APP_DIR/wp-includes" ] || [ ! -f "$APP_DIR/index.php" ]; then
-  wp core download --path="$APP_DIR" --locale=es_ES --force --allow-root
+  wp core download --path="$APP_DIR" --force --allow-root
 fi
 
 if [ ! -f "$APP_DIR/wp-config.php" ]; then

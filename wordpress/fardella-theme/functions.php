@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.3.0' );
+define( 'FARDELLA_THEME_VERSION', '1.3.1' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );

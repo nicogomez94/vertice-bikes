@@ -2022,16 +2022,21 @@ p {
 }
 
 .fardella-single-product {
+  width: 100%;
+  max-width: 100vw;
   min-height: 80vh;
   padding: 72px var(--pad) 110px;
 }
 
 .fardella-product {
+  width: 100%;
   max-width: 1380px;
   margin: 0 auto;
 }
 
 .fardella-product-stage {
+  width: 100%;
+  max-width: 100%;
   display: grid;
   gap: 54px;
   align-items: start;
@@ -2064,6 +2069,8 @@ p {
 
 .fardella-product-summary {
   min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
   padding: 14px 0 0;
 }
 
@@ -2075,10 +2082,11 @@ p {
   max-width: 780px;
   margin: 0 0 34px;
   font-family: var(--display);
-  font-size: 64px;
+  font-size: 56px;
   font-weight: 800;
   line-height: .9;
   text-wrap: balance;
+  overflow-wrap: anywhere;
   text-transform: uppercase;
 }
 
@@ -2476,7 +2484,7 @@ p {
 
 @media (min-width: 900px) {
   .fardella-product-stage {
-    grid-template-columns: minmax(0, 1.03fr) minmax(430px, .97fr);
+    grid-template-columns: minmax(0, 1.03fr) minmax(0, .97fr);
   }
 
   .fardella-product-summary {

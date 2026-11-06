@@ -120,6 +120,8 @@ $WP theme activate "$THEME_NAME"
 echo "== Configurando WordPress y WooCommerce en español =="
 $WP language core install es_ES || true
 $WP site switch-language es_ES || $WP option update WPLANG es_ES
+$WP language plugin install woocommerce es_ES || true
+$WP language plugin update --all || true
 $WP option update timezone_string America/Argentina/Buenos_Aires
 $WP option update date_format 'd/m/Y'
 $WP option update time_format 'H:i'

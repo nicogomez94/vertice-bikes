@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.0.0' );
+define( 'FARDELLA_THEME_VERSION', '1.3.0' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );
@@ -127,6 +127,14 @@ function fardella_price_html( $html, $product ) {
 	return $html . '<small class="fardella-price-label">' . esc_html( $label ) . '</small>';
 }
 add_filter( 'woocommerce_get_price_html', 'fardella_price_html', 30, 2 );
+
+function fardella_add_to_cart_label() {
+	return 'Añadir al pedido';
+}
+add_filter( 'woocommerce_product_single_add_to_cart_text', 'fardella_add_to_cart_label' );
+add_filter( 'woocommerce_product_add_to_cart_text', 'fardella_add_to_cart_label' );
+
+add_filter( 'woocommerce_show_page_title', '__return_false' );
 
 function fardella_wholesale_product_field() {
 	woocommerce_wp_text_input(

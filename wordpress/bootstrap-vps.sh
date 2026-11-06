@@ -217,8 +217,86 @@ systemctl reload nginx
 
 echo "== Habilitando HTTPS para el dominio técnico =="
 if ! certbot certificates 2>/dev/null | grep -q "Certificate Name: $DOMAIN"; then
-  certbot --nginx -d "$DOMAIN" --non-interactive --agree-tos -m "$ADMIN_EMAIL" --redirect
+  certbot certonly --webroot -w "$APP_DIR" -d "$DOMAIN" --non-interactive --agree-tos -m "$ADMIN_EMAIL"
 fi
+
+cat > /etc/nginx/snippets/fardella-wordpress.conf <<NGINX
+index index.php index.html;
+client_max_body_size 64m;
+
+location / {
+    try_files \$uri \$uri/ /index.php?\$args;
+}
+
+location ~ \.php\$ {
+    include snippets/fastcgi-php.conf;
+    fastcgi_pass unix:$PHP_SOCKET;
+    fastcgi_read_timeout 120;
+}
+
+location ~* \.(?:css|js|jpg|jpeg|gif|png|webp|svg|ico|woff|woff2|ttf|eot)\$ {
+    expires 30d;
+    access_log off;
+    try_files \$uri =404;
+}
+
+location ~ /\. {
+    deny all;
+}
+
+location = /xmlrpc.php {
+    deny all;
+}
+NGINX
+
+cat > "$NGINX_SITE" <<NGINX
+# FARDELLA_MANAGED
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $DOMAIN;
+    root $APP_DIR;
+
+    location /.well-known/acme-challenge/ {
+        try_files \$uri =404;
+    }
+
+    location / {
+        return 301 https://\$host\$request_uri;
+    }
+}
+
+server {
+    listen 80;
+    listen [::]:80;
+    server_name $FUTURE_DOMAINS;
+    root $APP_DIR;
+
+    access_log /var/log/nginx/fardella.access.log;
+    error_log /var/log/nginx/fardella.error.log;
+    include /etc/nginx/snippets/fardella-wordpress.conf;
+}
+
+server {
+    listen 443 ssl;
+    listen [::]:443 ssl;
+    http2 on;
+    server_name $DOMAIN;
+    root $APP_DIR;
+
+    ssl_certificate /etc/letsencrypt/live/$DOMAIN/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/$DOMAIN/privkey.pem;
+    include /etc/letsencrypt/options-ssl-nginx.conf;
+    ssl_dhparam /etc/letsencrypt/ssl-dhparams.pem;
+
+    access_log /var/log/nginx/fardella.access.log;
+    error_log /var/log/nginx/fardella.error.log;
+    include /etc/nginx/snippets/fardella-wordpress.conf;
+}
+NGINX
+
+nginx -t
+systemctl reload nginx
 $WP option update home "https://$DOMAIN"
 $WP option update siteurl "https://$DOMAIN"
 

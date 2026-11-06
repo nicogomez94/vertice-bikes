@@ -123,8 +123,8 @@ $WP site switch-language es_ES || $WP option update WPLANG es_ES
 $WP option update timezone_string America/Argentina/Buenos_Aires
 $WP option update date_format 'd/m/Y'
 $WP option update time_format 'H:i'
-$WP rewrite structure '/%postname%/' --hard
-$WP rewrite flush --hard
+$WP option update permalink_structure '/%postname%/'
+$WP option delete rewrite_rules || true
 $WP option update woocommerce_currency ARS
 $WP option update woocommerce_default_country 'AR:B'
 $WP option update woocommerce_currency_pos left_space

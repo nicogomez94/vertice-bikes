@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.4.0' );
+define( 'FARDELLA_THEME_VERSION', '1.4.1' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );
@@ -106,7 +106,7 @@ function fardella_apply_role_price( $price, $product ) {
 		return (string) wc_format_decimal( (float) $wholesale * ( 1 + ( $markup / 100 ) ) );
 	}
 
-	return '';
+	return (string) wc_format_decimal( $wholesale );
 }
 add_filter( 'woocommerce_product_get_price', 'fardella_apply_role_price', 20, 2 );
 add_filter( 'woocommerce_product_get_regular_price', 'fardella_apply_role_price', 20, 2 );
@@ -119,11 +119,7 @@ function fardella_price_html( $html, $product ) {
 		return $html;
 	}
 
-	if ( ! fardella_is_wholesale_customer() && 0.0 === fardella_public_markup() ) {
-		return '<span class="price-on-request">Ingresá para ver tu precio</span>';
-	}
-
-	$label = fardella_is_wholesale_customer() ? 'Precio mayorista + IVA' : 'Precio al público';
+	$label = fardella_is_wholesale_customer() || 0.0 === fardella_public_markup() ? 'Precio mayorista + IVA' : 'Precio al público';
 	return $html . '<small class="fardella-price-label">' . esc_html( $label ) . '</small>';
 }
 add_filter( 'woocommerce_get_price_html', 'fardella_price_html', 30, 2 );
@@ -141,7 +137,7 @@ function fardella_wholesale_product_field() {
 		array(
 			'id'                => '_fardella_wholesale_price',
 			'label'             => 'Precio mayorista',
-			'description'       => 'Visible únicamente para clientes mayoristas aprobados. Ingresar sin símbolo de moneda.',
+			'description'       => 'Precio base del catálogo mayorista. Ingresar sin símbolo de moneda.',
 			'desc_tip'          => true,
 			'type'              => 'number',
 			'custom_attributes' => array(
@@ -340,7 +336,7 @@ function fardella_wholesale_settings_page() {
 			<table class="form-table" role="presentation">
 				<tr>
 					<th><label for="fardella_public_markup">Recargo para precio público (%)</label></th>
-					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', '' ) ); ?>"><p class="description">Mientras quede vacío o en cero, el público deberá iniciar sesión para ver su precio y nunca verá el valor mayorista.</p></td>
+					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', '' ) ); ?>"><p class="description">Mientras quede vacío o en cero, se mostrarán directamente los precios mayoristas del catálogo. Un porcentaje mayor a cero genera precios públicos con ese recargo.</p></td>
 				</tr>
 				<tr>
 					<th><label for="fardella_wholesale_email">Email de aprobaciones</label></th>

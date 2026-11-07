@@ -20,7 +20,7 @@ $terms         = wp_get_post_terms( get_the_ID(), 'product_cat' );
 $category_name = $terms ? $terms[0]->name : 'Catálogo Fardella';
 $is_wholesale  = fardella_is_wholesale_customer();
 $is_pending    = is_user_logged_in() && in_array( 'fardella_wholesale_pending', (array) wp_get_current_user()->roles, true );
-$can_purchase  = $is_wholesale || fardella_public_markup() > 0;
+$can_purchase  = $product->is_purchasable();
 ?>
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'fardella-product', $product ); ?>>
 	<section class="fardella-product-stage">
@@ -42,7 +42,7 @@ $can_purchase  = $is_wholesale || fardella_public_markup() > 0;
 
 			<?php if ( $can_purchase ) : ?>
 				<div class="fardella-buy-box">
-					<p><i class="fa-solid fa-circle-check"></i> <?php echo esc_html( $is_wholesale ? 'Cuenta mayorista habilitada' : 'Compra online habilitada' ); ?></p>
+					<p><i class="fa-solid fa-circle-check"></i> Compra online habilitada</p>
 					<?php woocommerce_template_single_add_to_cart(); ?>
 				</div>
 			<?php elseif ( $is_pending ) : ?>

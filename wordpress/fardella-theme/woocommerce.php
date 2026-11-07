@@ -12,7 +12,7 @@ get_header();
 		<header class="fardella-shop-heading">
 			<p class="eyebrow dark">Catálogo septiembre 2026</p>
 			<h1><?php echo esc_html( woocommerce_page_title( false ) ); ?></h1>
-			<p>Explorá bicicletas, componentes, repuestos y accesorios. Los precios mayoristas aparecen al iniciar sesión con una cuenta aprobada.</p>
+			<p>Explorá bicicletas, componentes, repuestos y accesorios con precios mayoristas visibles y compra directa desde el carrito.</p>
 		</header>
 	<?php endif; ?>
 	<?php woocommerce_content(); ?>

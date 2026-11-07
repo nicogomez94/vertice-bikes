@@ -61,7 +61,7 @@ $u = get_template_directory_uri();
 	</section>
 
 	<section class="catalog section-pad" id="productos" aria-labelledby="catalog-title">
-		<div class="section-heading fade-in"><div><p class="eyebrow dark">Selección del catálogo</p><h2 id="catalog-title">Elegí lo que<br><em>necesitás.</em></h2></div><p>Los clientes aprobados acceden a valores mayoristas iniciando sesión. El público verá el precio minorista configurado por Fardella.</p></div>
+		<div class="section-heading fade-in"><div><p class="eyebrow dark">Selección del catálogo</p><h2 id="catalog-title">Elegí lo que<br><em>necesitás.</em></h2></div><p>Consultá los precios mayoristas del catálogo, elegí las cantidades y armá tu pedido directamente desde el carrito.</p></div>
 		<div class="filters fade-in" role="group" aria-label="Filtrar productos">
 			<button class="filter active" data-filter="todos">Todos</button>
 			<button class="filter" data-filter="bicicletas">Bicicletas</button>

@@ -61,7 +61,7 @@ $u = get_template_directory_uri();
 	</section>
 
 	<section class="catalog section-pad" id="productos" aria-labelledby="catalog-title">
-		<div class="section-heading fade-in"><div><p class="eyebrow dark">Selección del catálogo</p><h2 id="catalog-title">Elegí lo que<br><em>necesitás.</em></h2></div><p>Consultá los precios mayoristas del catálogo, elegí las cantidades y armá tu pedido directamente desde el carrito.</p></div>
+		<div class="section-heading fade-in"><div><p class="eyebrow dark">Selección del catálogo</p><h2 id="catalog-title">Elegí lo que<br><em>necesitás.</em></h2></div><p>Consultá los precios del catálogo, elegí las cantidades y armá tu pedido directamente desde el carrito.</p></div>
 		<div class="filters fade-in" role="group" aria-label="Filtrar productos">
 			<button class="filter active" data-filter="todos">Todos</button>
 			<button class="filter" data-filter="bicicletas">Bicicletas</button>
@@ -89,7 +89,7 @@ $u = get_template_directory_uri();
 				?>
 				<article class="product-card" data-product-card data-category="<?php echo esc_attr( $category ); ?>">
 					<a class="product-image-wrap" href="<?php the_permalink(); ?>" aria-label="Ver <?php the_title_attribute(); ?>">
-						<?php echo wp_kses_post( $product->get_image( 'woocommerce_thumbnail', array( 'loading' => 'lazy' ) ) ); ?>
+						<?php echo wp_kses_post( $product->get_image( 'full', array( 'loading' => 'lazy' ) ) ); ?>
 						<span class="product-tag"><?php echo esc_html( $type ); ?></span>
 					</a>
 					<div class="product-card-content">

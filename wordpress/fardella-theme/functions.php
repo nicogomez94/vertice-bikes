@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.4.1' );
+define( 'FARDELLA_THEME_VERSION', '1.5.0' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );
@@ -113,13 +113,22 @@ add_filter( 'woocommerce_product_get_regular_price', 'fardella_apply_role_price'
 add_filter( 'woocommerce_product_variation_get_price', 'fardella_apply_role_price', 20, 2 );
 add_filter( 'woocommerce_product_variation_get_regular_price', 'fardella_apply_role_price', 20, 2 );
 
+/**
+ * Use the original catalog image in product grids.
+ * WooCommerce's square thumbnail files are hard-cropped and can cut bicycles.
+ */
+function fardella_archive_image_size() {
+	return 'full';
+}
+add_filter( 'single_product_archive_thumbnail_size', 'fardella_archive_image_size' );
+
 function fardella_price_html( $html, $product ) {
 	$wholesale = $product->get_meta( '_fardella_wholesale_price', true );
 	if ( '' === $wholesale ) {
 		return $html;
 	}
 
-	$label = fardella_is_wholesale_customer() || 0.0 === fardella_public_markup() ? 'Precio mayorista + IVA' : 'Precio al público';
+	$label = fardella_is_wholesale_customer() ? 'Precio mayorista + IVA' : 'Precio';
 	return $html . '<small class="fardella-price-label">' . esc_html( $label ) . '</small>';
 }
 add_filter( 'woocommerce_get_price_html', 'fardella_price_html', 30, 2 );

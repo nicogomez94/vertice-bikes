@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.3.2' );
+define( 'FARDELLA_THEME_VERSION', '1.4.0' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );
@@ -120,7 +120,7 @@ function fardella_price_html( $html, $product ) {
 	}
 
 	if ( ! fardella_is_wholesale_customer() && 0.0 === fardella_public_markup() ) {
-		return '<span class="price-on-request">Consultar precio minorista</span>';
+		return '<span class="price-on-request">Ingresá para ver tu precio</span>';
 	}
 
 	$label = fardella_is_wholesale_customer() ? 'Precio mayorista + IVA' : 'Precio al público';
@@ -129,7 +129,7 @@ function fardella_price_html( $html, $product ) {
 add_filter( 'woocommerce_get_price_html', 'fardella_price_html', 30, 2 );
 
 function fardella_add_to_cart_label() {
-	return 'Añadir al pedido';
+	return 'Añadir al carrito';
 }
 add_filter( 'woocommerce_product_single_add_to_cart_text', 'fardella_add_to_cart_label' );
 add_filter( 'woocommerce_product_add_to_cart_text', 'fardella_add_to_cart_label' );
@@ -340,7 +340,7 @@ function fardella_wholesale_settings_page() {
 			<table class="form-table" role="presentation">
 				<tr>
 					<th><label for="fardella_public_markup">Recargo para precio público (%)</label></th>
-					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', '' ) ); ?>"><p class="description">Mientras quede vacío o en cero, el público verá “Consultar precio minorista” y nunca el valor mayorista.</p></td>
+					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', '' ) ); ?>"><p class="description">Mientras quede vacío o en cero, el público deberá iniciar sesión para ver su precio y nunca verá el valor mayorista.</p></td>
 				</tr>
 				<tr>
 					<th><label for="fardella_wholesale_email">Email de aprobaciones</label></th>

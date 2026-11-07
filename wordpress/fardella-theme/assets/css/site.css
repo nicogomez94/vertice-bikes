@@ -681,6 +681,8 @@ p {
   width: 44px;
   height: 44px;
   flex: 0 0 auto;
+  display: grid;
+  place-items: center;
   border: 0;
   background: var(--red-bright);
   color: var(--white);
@@ -690,7 +692,12 @@ p {
 
 .quick-add:hover {
   background: var(--red);
-  transform: rotate(90deg);
+  transform: translateX(3px);
+}
+
+.quick-add i {
+  display: block;
+  line-height: 1;
 }
 
 .catalog-note {
@@ -4502,26 +4509,106 @@ p {
 }
 
 /* Mantener el espaciado editorial por encima de las reglas base de WooCommerce. */
-.fardella-woocommerce.fardella-single-product {
-  padding: 72px var(--pad) 110px;
+.fardella-site.inner-page main.fardella-woocommerce.fardella-single-product {
+  padding: 160px var(--pad) 110px;
 }
 
-.wp-content-page.fardella-commerce-page {
-  padding-top: 85px;
+.fardella-site.inner-page main.wp-content-page.fardella-commerce-page {
+  padding-top: 160px;
+}
+
+.fardella-site.inner-page main.fardella-shop {
+  padding-top: 160px;
+}
+
+.product-image-wrap {
+  height: auto;
+  aspect-ratio: 4 / 3;
+  padding: 10px;
+}
+
+.product-image-wrap > img {
+  object-fit: contain;
+  object-position: center;
+}
+
+.product-card-content {
+  min-height: 235px;
+  padding: 17px;
+}
+
+.product-card h3 {
+  margin: 16px 0 18px;
+  font-size: 24px;
+}
+
+.woocommerce ul.products {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.woocommerce ul.products li.product {
+  padding: 12px;
+}
+
+.woocommerce ul.products li.product a img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 4 / 3;
+  margin: 0 0 14px;
+  padding: 8px;
+  object-fit: contain;
+  object-position: center;
+  background: #fff;
+}
+
+.woocommerce ul.products li.product .woocommerce-loop-product__title {
+  font-size: 22px;
+  line-height: 1;
+}
+
+@media (min-width: 1200px) {
+  .product-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+@media (min-width: 1700px) {
+  .product-grid,
+  .woocommerce ul.products {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
 }
 
 @media (max-width: 899px) {
-  .fardella-woocommerce.fardella-single-product {
-    padding-top: 42px;
+  .fardella-site.inner-page main.fardella-woocommerce.fardella-single-product {
+    padding-top: 135px;
+  }
+
+  .fardella-site.inner-page main.wp-content-page.fardella-commerce-page,
+  .fardella-site.inner-page main.fardella-shop {
+    padding-top: 135px;
+  }
+
+  .woocommerce ul.products {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
 @media (max-width: 599px) {
-  .fardella-woocommerce.fardella-single-product {
-    padding: 28px 20px 75px;
+  .fardella-site.inner-page main.fardella-woocommerce.fardella-single-product {
+    padding: 130px 20px 75px;
   }
 
-  .wp-content-page.fardella-commerce-page {
-    padding-top: 50px;
+  .fardella-site.inner-page main.wp-content-page.fardella-commerce-page {
+    padding-top: 130px;
+  }
+
+  .fardella-site.inner-page main.fardella-shop {
+    padding-top: 130px;
+  }
+
+  .woocommerce ul.products {
+    grid-template-columns: 1fr;
   }
 }

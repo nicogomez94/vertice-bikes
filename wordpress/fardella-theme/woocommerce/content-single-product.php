@@ -20,6 +20,7 @@ $terms         = wp_get_post_terms( get_the_ID(), 'product_cat' );
 $category_name = $terms ? $terms[0]->name : 'Catálogo Fardella';
 $is_wholesale  = fardella_is_wholesale_customer();
 $is_pending    = is_user_logged_in() && in_array( 'fardella_wholesale_pending', (array) wp_get_current_user()->roles, true );
+$can_purchase  = $is_wholesale || fardella_public_markup() > 0;
 ?>
 <div id="product-<?php the_ID(); ?>" <?php wc_product_class( 'fardella-product', $product ); ?>>
 	<section class="fardella-product-stage">
@@ -39,9 +40,9 @@ $is_pending    = is_user_logged_in() && in_array( 'fardella_wholesale_pending', 
 				<div><dt>Disponibilidad</dt><dd>Sujeta a confirmación</dd></div>
 			</dl>
 
-			<?php if ( $is_wholesale ) : ?>
+			<?php if ( $can_purchase ) : ?>
 				<div class="fardella-buy-box">
-					<p><i class="fa-solid fa-circle-check"></i> Cuenta mayorista habilitada</p>
+					<p><i class="fa-solid fa-circle-check"></i> <?php echo esc_html( $is_wholesale ? 'Cuenta mayorista habilitada' : 'Compra online habilitada' ); ?></p>
 					<?php woocommerce_template_single_add_to_cart(); ?>
 				</div>
 			<?php elseif ( $is_pending ) : ?>
@@ -52,7 +53,7 @@ $is_pending    = is_user_logged_in() && in_array( 'fardella_wholesale_pending', 
 			<?php else : ?>
 				<div class="fardella-access-box">
 					<i class="fa-solid fa-shop-lock"></i>
-					<div><strong>Comprá con precio mayorista</strong><span>Ingresá con una cuenta aprobada para ver el precio, elegir cantidad y añadir al pedido.</span></div>
+					<div><strong>Ingresá para comprar</strong><span>Accedé con una cuenta aprobada para ver tu precio, elegir la cantidad y añadir el producto al carrito.</span></div>
 					<div class="fardella-access-actions">
 						<a class="button button-accent" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>">Iniciar sesión <i class="fa-solid fa-arrow-right"></i></a>
 						<a class="button button-outline-dark" href="<?php echo esc_url( home_url( '/mayoristas/' ) ); ?>">Solicitar cuenta</a>

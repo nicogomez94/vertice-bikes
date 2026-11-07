@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.6.0' );
+define( 'FARDELLA_THEME_VERSION', '1.7.0' );
 
 /**
  * Fardella is a live store. Keep WooCommerce's onboarding wizard from

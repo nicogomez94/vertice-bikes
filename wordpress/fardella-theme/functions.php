@@ -9,7 +9,17 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.5.0' );
+define( 'FARDELLA_THEME_VERSION', '1.6.0' );
+
+/**
+ * Fardella is a live store. Keep WooCommerce's onboarding wizard from
+ * intercepting product, cart or checkout routes with its coming-soon screen.
+ */
+function fardella_force_live_store() {
+	return 'no';
+}
+add_filter( 'pre_option_woocommerce_coming_soon', 'fardella_force_live_store' );
+add_filter( 'pre_option_woocommerce_store_pages_only', 'fardella_force_live_store' );
 
 function fardella_theme_setup() {
 	load_theme_textdomain( 'fardella', get_template_directory() . '/languages' );

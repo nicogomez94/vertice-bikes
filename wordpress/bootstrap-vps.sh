@@ -138,6 +138,8 @@ $WP option update woocommerce_checkout_privacy_policy_text 'Usaremos tus datos p
 $WP option update woocommerce_enable_myaccount_registration no
 $WP option update woocommerce_enable_guest_checkout yes
 $WP option update woocommerce_enable_checkout_login_reminder no
+$WP option update woocommerce_coming_soon no
+$WP option update woocommerce_store_pages_only no
 $WP option update fardella_wholesale_email "$ADMIN_EMAIL"
 
 create_page() {

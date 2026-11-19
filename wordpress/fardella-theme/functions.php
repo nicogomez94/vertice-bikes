@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.7.0' );
+define( 'FARDELLA_THEME_VERSION', '1.8.0' );
 
 /**
  * Fardella is a live store. Keep WooCommerce's onboarding wizard from
@@ -93,8 +93,8 @@ function fardella_is_wholesale_customer( $user_id = 0 ) {
 }
 
 function fardella_public_markup() {
-	$value = get_option( 'fardella_public_markup', '' );
-	return is_numeric( $value ) && (float) $value > 0 ? (float) $value : 0.0;
+	$value = get_option( 'fardella_public_markup', 100 );
+	return is_numeric( $value ) && (float) $value >= 0 ? (float) $value : 100.0;
 }
 
 function fardella_apply_role_price( $price, $product ) {
@@ -138,7 +138,7 @@ function fardella_price_html( $html, $product ) {
 		return $html;
 	}
 
-	$label = fardella_is_wholesale_customer() ? 'Precio mayorista + IVA' : 'Precio';
+	$label = fardella_is_wholesale_customer() ? 'Precio mayorista + IVA' : 'Precio minorista';
 	return $html . '<small class="fardella-price-label">' . esc_html( $label ) . '</small>';
 }
 add_filter( 'woocommerce_get_price_html', 'fardella_price_html', 30, 2 );
@@ -355,7 +355,7 @@ function fardella_wholesale_settings_page() {
 			<table class="form-table" role="presentation">
 				<tr>
 					<th><label for="fardella_public_markup">Recargo para precio público (%)</label></th>
-					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', '' ) ); ?>"><p class="description">Mientras quede vacío o en cero, se mostrarán directamente los precios mayoristas del catálogo. Un porcentaje mayor a cero genera precios públicos con ese recargo.</p></td>
+					<td><input type="number" min="0" step="0.01" id="fardella_public_markup" name="fardella_public_markup" value="<?php echo esc_attr( get_option( 'fardella_public_markup', 100 ) ); ?>"><p class="description">El valor acordado para la venta al público es 100%: duplica el precio mayorista del catálogo. Los clientes mayoristas aprobados ven el precio base al iniciar sesión.</p></td>
 				</tr>
 				<tr>
 					<th><label for="fardella_wholesale_email">Email de aprobaciones</label></th>

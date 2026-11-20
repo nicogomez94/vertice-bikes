@@ -144,7 +144,7 @@ const setupInquiryForm = () => {
     const subject = `Consulta web · ${data.get("interes")}`;
     const body = [
       `Nombre: ${data.get("nombre")}`,
-      `Comercio: ${data.get("comercio") || "No indicado"}`,
+      `Bicicleta: ${data.get("bicicleta") || "No indicada"}`,
       `Email: ${data.get("email")}`,
       `Teléfono: ${data.get("telefono") || "No indicado"}`,
       `Interés: ${data.get("interes")}`,
@@ -168,7 +168,7 @@ const setupFormDebug = () => {
     phone: "11 5555 0101",
     password: "PruebaFardella2026!",
     nombre: "Cliente de prueba",
-    comercio: "Bicicletería Demo",
+    bicicleta: "Bicicleta urbana rodado 28",
     telefono: "11 5555 0101",
     interes: "Cuenta mayorista",
     mensaje: "Consulta de prueba para verificar el funcionamiento del formulario.",

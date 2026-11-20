@@ -32,7 +32,7 @@ if ( function_exists( 'fardella_catalog_data' ) ) {
 <?php wp_body_open(); ?>
 <div class="announcement">
 	<span>FARDELLA S.A.</span>
-	<span>Distribuidor mayorista desde 1939</span>
+	<span>Ciclismo desde 1939</span>
 	<span>Envíos a todo el país</span>
 </div>
 <header class="site-header">

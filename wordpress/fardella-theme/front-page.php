@@ -17,12 +17,11 @@ $u = get_template_directory_uri();
 		</div>
 		<div class="hero-shade" aria-hidden="true"></div>
 		<div class="hero-copy">
-			<div class="hero-kicker"><span aria-hidden="true"></span><p class="eyebrow">Fardella · Distribuidor mayorista</p></div>
-			<h1 id="hero-title">Todo para tu<br><em>bicicletería.</em></h1>
-			<p class="hero-description">Bicicletas, repuestos y accesorios para acompañar el crecimiento de tu negocio.</p>
+			<div class="hero-kicker"><span aria-hidden="true"></span><p class="eyebrow">Fardella · Ciclismo desde 1939</p></div>
+			<h1 id="hero-title">Todo para tu<br><em>bicicleta.</em></h1>
+			<p class="hero-description">Bicicletas, repuestos y accesorios para disfrutar cada salida a tu manera.</p>
 			<div class="hero-actions">
 				<a class="button button-accent" href="#productos">Ingresar al catálogo <i class="fa-solid fa-arrow-right"></i></a>
-				<a class="button button-outline" href="<?php echo esc_url( home_url( '/mayoristas/' ) ); ?>">Acceso mayorista</a>
 			</div>
 			<div class="hero-footnote"><span>PRECIOS Y CONDICIONES A CONFIRMAR</span><span>DESDE 1939</span></div>
 		</div>
@@ -34,21 +33,9 @@ $u = get_template_directory_uri();
 	</section>
 
 	<section class="trust-strip" aria-label="Qué encontrás en Fardella">
-		<article><i class="fa-solid fa-shop-lock"></i><div><strong>Un portal para tu comercio</strong><span>Precios exclusivos con aprobación</span></div></article>
-		<article><i class="fa-solid fa-cart-flatbed"></i><div><strong>Armá tu pedido online</strong><span>Elegí productos y cantidades</span></div></article>
-		<article><i class="fa-solid fa-comments"></i><div><strong>Atención directa</strong><span>Coordinamos pago y entrega</span></div></article>
-	</section>
-
-	<section class="wholesale-callout section-pad" aria-labelledby="wholesale-title">
-		<div class="wholesale-callout-copy fade-in">
-			<p class="eyebrow">Portal para comercios</p>
-			<h2 id="wholesale-title">¿Tenés una<br>bicicletería?</h2>
-			<p>Registrá tu comercio y, una vez aprobado, ingresá para ver precios mayoristas y armar pedidos online.</p>
-		</div>
-		<div class="wholesale-callout-actions fade-in">
-			<a class="button button-light" href="<?php echo esc_url( home_url( '/mayoristas/' ) ); ?>">Solicitar cuenta <i class="fa-solid fa-arrow-right"></i></a>
-			<a class="text-link light-link" href="<?php echo esc_url( home_url( '/mi-cuenta/' ) ); ?>">Ya tengo cuenta <i class="fa-regular fa-user"></i></a>
-		</div>
+		<article><i class="fa-solid fa-bicycle"></i><div><strong>Todo para tu bicicleta</strong><span>Bicicletas, repuestos y accesorios</span></div></article>
+		<article><i class="fa-solid fa-cart-shopping"></i><div><strong>Comprá online</strong><span>Elegí productos y cantidades</span></div></article>
+		<article><i class="fa-solid fa-truck-fast"></i><div><strong>Envíos a todo el país</strong><span>Recibí tu compra donde estés</span></div></article>
 	</section>
 
 	<section class="categories section-pad" id="categorias">
@@ -114,14 +101,14 @@ $u = get_template_directory_uri();
 		<div class="story-image"><img src="<?php echo esc_url( $u . '/assets/images/fardella/toscana-azul.jpg' ); ?>" alt="Bicicleta urbana Toscana azul del catálogo Fardella" loading="lazy"><span class="image-index">FARDELLA / CICLISMO</span></div>
 		<div class="story-copy">
 			<p class="eyebrow">Quiénes somos</p><h2>Una historia<br>que sigue rodando.</h2>
-			<p>Desde 1939, Fardella S.A. fabrica, importa y distribuye productos para el mundo de la bicicleta. Como empresa familiar, acompañamos a comercios con variedad, experiencia y atención cercana.</p>
+			<p>Desde 1939, Fardella S.A. fabrica, importa y distribuye productos para el mundo de la bicicleta. Como empresa familiar, acompañamos a ciclistas de todo el país con variedad, experiencia y atención cercana.</p>
 			<ul><li><i class="fa-solid fa-circle-check"></i> Bicicletas para ciudad y montaña</li><li><i class="fa-solid fa-circle-check"></i> Componentes y repuestos</li><li><i class="fa-solid fa-circle-check"></i> Accesorios para cada salida</li></ul>
 			<a class="text-link" href="mailto:info@fardella.com.ar">Hablemos <i class="fa-solid fa-arrow-right"></i></a>
 		</div>
 	</section>
 
 	<section class="brands section-pad" id="marcas" aria-labelledby="brands-title">
-		<div class="brands-heading fade-in"><div><p class="eyebrow dark">Marcas que trabajamos</p><h2 id="brands-title">Respaldo en<br><em>cada elección.</em></h2></div><p>Seleccionamos marcas reconocidas por su calidad, durabilidad y rendimiento para ofrecer soluciones confiables a cada comercio.</p></div>
+		<div class="brands-heading fade-in"><div><p class="eyebrow dark">Marcas que trabajamos</p><h2 id="brands-title">Respaldo en<br><em>cada elección.</em></h2></div><p>Seleccionamos marcas reconocidas por su calidad, durabilidad y rendimiento para que encuentres una opción confiable para tu bicicleta.</p></div>
 		<div class="brand-grid">
 			<article class="brand-card fade-in"><div class="brand-logo"><img src="<?php echo esc_url( $u . '/assets/images/brands/hutchinson.png' ); ?>" alt="Hutchinson" loading="lazy"></div><span class="brand-name">Hutchinson</span><p>Cubiertas de tecnología francesa para ciudad, ruta y terrenos exigentes.</p></article>
 			<article class="brand-card fade-in"><div class="brand-logo"><img src="<?php echo esc_url( $u . '/assets/images/brands/shimano.svg' ); ?>" alt="Shimano" loading="lazy"></div><span class="brand-name">Shimano</span><p>Transmisiones y componentes de precisión para un andar confiable.</p></article>
@@ -141,20 +128,20 @@ $u = get_template_directory_uri();
 			<article class="why-card fade-in"><i class="fa-solid fa-helmet-safety"></i><div><h3>Accesorios esenciales</h3><p>Equipamiento para mejorar la seguridad, el confort y el rendimiento al rodar.</p></div></article>
 			<article class="why-card fade-in"><i class="fa-solid fa-shield-halved"></i><div><h3>Compra simple y segura</h3><p>Armá tu selección online y coordiná las condiciones comerciales con el equipo.</p></div></article>
 			<article class="why-card fade-in"><i class="fa-solid fa-headset"></i><div><h3>Atención personalizada</h3><p>Asesoramiento directo para encontrar productos, disponibilidad y alternativas.</p></div></article>
-			<article class="why-card fade-in"><i class="fa-solid fa-truck-fast"></i><div><h3>Envíos a toda Argentina</h3><p>Logística desde Buenos Aires para comercios y clientes de cualquier provincia.</p></div></article>
+			<article class="why-card fade-in"><i class="fa-solid fa-truck-fast"></i><div><h3>Envíos a toda Argentina</h3><p>Logística desde Buenos Aires para ciclistas de cualquier provincia.</p></div></article>
 		</div>
 	</section>
 
 	<section class="inquiry section-pad" id="consulta" aria-labelledby="inquiry-title">
-		<div class="inquiry-intro fade-in"><p class="eyebrow dark">Armá tu consulta</p><h2 id="inquiry-title">Contanos qué<br><em>necesitás.</em></h2><p>Dejanos los datos de tu comercio y el tipo de producto que buscás. El equipo de Fardella te acompaña con disponibilidad, alternativas y condiciones comerciales.</p><div class="inquiry-notes"><span><i class="fa-solid fa-check"></i> Respuesta personalizada</span><span><i class="fa-solid fa-check"></i> Atención mayorista</span><span><i class="fa-solid fa-check"></i> Envíos a todo el país</span></div></div>
+		<div class="inquiry-intro fade-in"><p class="eyebrow dark">Armá tu consulta</p><h2 id="inquiry-title">Contanos qué<br><em>necesitás.</em></h2><p>Dejanos tus datos y contanos qué producto estás buscando. El equipo de Fardella te acompaña con disponibilidad, alternativas y asesoramiento personalizado.</p><div class="inquiry-notes"><span><i class="fa-solid fa-check"></i> Respuesta personalizada</span><span><i class="fa-solid fa-check"></i> Asesoramiento directo</span><span><i class="fa-solid fa-check"></i> Envíos a todo el país</span></div></div>
 		<form class="inquiry-form fade-in" data-inquiry-form>
-			<div class="form-grid"><label><span>Nombre y apellido *</span><input type="text" name="nombre" autocomplete="name" required placeholder="Tu nombre"></label><label><span>Comercio</span><input type="text" name="comercio" autocomplete="organization" placeholder="Nombre del comercio"></label><label><span>Email *</span><input type="email" name="email" autocomplete="email" required placeholder="nombre@comercio.com"></label><label><span>Teléfono</span><input type="tel" name="telefono" autocomplete="tel" placeholder="11 0000 0000"></label><label class="form-wide"><span>¿Qué estás buscando? *</span><select name="interes" required><option value="">Elegí una opción</option><option>Bicicletas</option><option>Cámaras, cubiertas o transmisión</option><option>Accesorios</option><option>Cuenta mayorista</option><option>Otro producto</option></select></label><label class="form-wide"><span>Tu consulta *</span><textarea name="mensaje" rows="4" required placeholder="Contanos cantidades, modelos o cualquier detalle que nos ayude a orientarte."></textarea></label></div>
+			<div class="form-grid"><label><span>Nombre y apellido *</span><input type="text" name="nombre" autocomplete="name" required placeholder="Tu nombre"></label><label><span>Tu bicicleta</span><input type="text" name="bicicleta" autocomplete="off" placeholder="Marca o modelo, si lo sabés"></label><label><span>Email *</span><input type="email" name="email" autocomplete="email" required placeholder="tuemail@ejemplo.com"></label><label><span>Teléfono</span><input type="tel" name="telefono" autocomplete="tel" placeholder="11 0000 0000"></label><label class="form-wide"><span>¿Qué estás buscando? *</span><select name="interes" required><option value="">Elegí una opción</option><option>Bicicletas</option><option>Cámaras, cubiertas o transmisión</option><option>Accesorios</option><option>Consulta sobre mi compra</option><option>Otro producto</option></select></label><label class="form-wide"><span>Tu consulta *</span><textarea name="mensaje" rows="4" required placeholder="Contanos el producto, modelo o cualquier detalle que nos ayude a orientarte."></textarea></label></div>
 			<div class="form-submit"><button class="button button-accent" type="submit">Preparar consulta <i class="fa-solid fa-arrow-right"></i></button><p data-form-status aria-live="polite">La consulta se prepara en tu correo para que puedas revisarla antes de enviarla.</p></div>
 		</form>
 	</section>
 
 	<section class="feature-banner section-pad" id="contacto">
-		<div class="feature-copy"><p class="eyebrow">Atención directa</p><h2>¿Buscás<br><em>algo más?</em></h2><p>Consultanos por bicicletas, repuestos, accesorios o condiciones para revendedores.</p><div class="contact-actions"><a class="button button-light" href="mailto:info@fardella.com.ar">Escribinos <i class="fa-solid fa-envelope"></i></a><a class="contact-phone" href="tel:+541160204963">11-6020-4963 <i class="fa-solid fa-phone"></i></a></div></div>
+		<div class="feature-copy"><p class="eyebrow">Atención directa</p><h2>¿Buscás<br><em>algo más?</em></h2><p>Consultanos por bicicletas, repuestos, accesorios o cualquier duda sobre tu compra.</p><div class="contact-actions"><a class="button button-light" href="mailto:info@fardella.com.ar">Escribinos <i class="fa-solid fa-envelope"></i></a><a class="contact-phone" href="tel:+541160204963">11-6020-4963 <i class="fa-solid fa-phone"></i></a></div></div>
 		<div class="feature-mark" aria-hidden="true">FARDELLA</div>
 	</section>
 </main>

@@ -22,8 +22,8 @@ $user     = wp_get_current_user();
 			<?php if ( fardella_is_wholesale_customer( $user->ID ) ) : ?>
 				<div class="wholesale-status-icon approved"><i class="fa-solid fa-store"></i></div>
 				<p class="eyebrow dark">Cuenta aprobada</p>
-				<h2>Hola, <?php echo esc_html( $user->display_name ); ?>.</h2>
-				<p>Ya estás viendo los precios mayoristas. Podés recorrer el catálogo, agregar productos al carrito y enviar tu pedido.</p>
+				<h2>Todo lo que necesitás para tu local.</h2>
+				<p>Hola, <?php echo esc_html( $user->display_name ); ?>. Ya estás viendo los precios mayoristas: recorré el catálogo, agregá productos al carrito y enviá tu pedido.</p>
 				<div class="wholesale-account-actions"><a class="button button-accent" href="<?php echo esc_url( home_url( '/#productos' ) ); ?>">Ver catálogo <i class="fa-solid fa-arrow-right"></i></a><a class="button button-dark" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>">Mi cuenta</a></div>
 			<?php elseif ( current_user_can( 'manage_woocommerce' ) ) : ?>
 				<div class="wholesale-status-icon approved"><i class="fa-solid fa-user-gear"></i></div>

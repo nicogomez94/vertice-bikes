@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.11.0' );
+define( 'FARDELLA_THEME_VERSION', '1.12.0' );
 define( 'FARDELLA_FORMS_DEBUG', true );
 
 /**

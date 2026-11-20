@@ -157,11 +157,58 @@ const setupInquiryForm = () => {
   });
 };
 
+const setupFormDebug = () => {
+  if (!window.fardellaForms?.debug) return;
+
+  const defaults = {
+    business_name: "Bicicletería Demo",
+    cuit: "30-12345678-9",
+    email: "prueba.mayorista@example.com",
+    phone: "11 5555 0101",
+    password: "PruebaFardella2026!",
+    nombre: "Cliente de prueba",
+    comercio: "Bicicletería Demo",
+    telefono: "11 5555 0101",
+    interes: "Cuenta mayorista",
+    mensaje: "Consulta de prueba para verificar el funcionamiento del formulario.",
+    billing_first_name: "Cliente",
+    billing_last_name: "Prueba",
+    billing_company: "Bicicletería Demo",
+    billing_email: "cliente.prueba@example.com",
+    billing_phone: "11 5555 0101",
+    billing_address_1: "Av. Corrientes 1234",
+    billing_city: "Buenos Aires",
+    billing_postcode: "1043"
+  };
+
+  document.body.classList.add("forms-debug-active");
+  document.querySelectorAll("form").forEach(form => {
+    if (form.querySelector("[data-debug-fill]")) return;
+    const fillable = [...form.elements].some(field => defaults[field.name] !== undefined);
+    if (!fillable) return;
+
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "form-debug-fill";
+    button.dataset.debugFill = "";
+    button.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Completar datos de prueba';
+    button.addEventListener("click", () => {
+      [...form.elements].forEach(field => {
+        if (defaults[field.name] === undefined || field.value) return;
+        field.value = defaults[field.name];
+        field.dispatchEvent(new Event("change", { bubbles: true }));
+      });
+    });
+    form.prepend(button);
+  });
+};
+
 document.addEventListener("DOMContentLoaded", () => {
   setupNavigation();
   setupHeroCarousel();
   setupCatalogFilters();
   setupObserver();
   setupInquiryForm();
+  setupFormDebug();
 });
 

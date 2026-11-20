@@ -1977,6 +1977,133 @@ p {
   }
 }
 
+/* Mayoristas: composición compacta y formularios con ancho editorial. */
+.wholesale-hero.section-pad {
+  min-height: 460px;
+  padding-top: 92px;
+  padding-bottom: 82px;
+  align-items: center;
+}
+
+.wholesale-hero h1 {
+  font-size: 78px;
+}
+
+.wholesale-hero > p {
+  align-self: center;
+  font-size: 15px;
+  line-height: 1.7;
+}
+
+.woocommerce-account .fardella-commerce-page {
+  max-width: 1180px;
+}
+
+.woocommerce-account .wp-page-heading {
+  max-width: 820px;
+  margin-bottom: 34px;
+  padding-bottom: 24px;
+}
+
+.woocommerce-account .wp-page-heading h1 {
+  font-size: 64px;
+  text-transform: none;
+}
+
+.woocommerce-account .woocommerce:not(:has(.woocommerce-MyAccount-navigation)) {
+  max-width: 760px;
+}
+
+.woocommerce-account .woocommerce-form-login,
+.woocommerce-account .woocommerce-form-register,
+.woocommerce-account form.woocommerce-ResetPassword {
+  max-width: 760px;
+  margin: 0;
+  padding: 34px;
+  border: 1px solid rgba(36, 34, 32, .14);
+  border-top: 4px solid var(--red-bright);
+  border-radius: 0;
+  background: #fff;
+  box-shadow: 0 18px 55px rgba(36, 34, 32, .07);
+}
+
+.woocommerce-account .woocommerce-form-login .form-row,
+.woocommerce-account .woocommerce-form-register .form-row {
+  margin: 0 0 18px;
+  padding: 0;
+}
+
+.woocommerce-account .woocommerce-form-login input.input-text,
+.woocommerce-account .woocommerce-form-register input.input-text {
+  min-height: 50px;
+  padding: 12px 14px;
+}
+
+.woocommerce-account .woocommerce-form-login__submit,
+.woocommerce-account .woocommerce-form-register__submit {
+  min-height: 48px;
+  margin: 8px 14px 8px 0 !important;
+  padding: 0 26px !important;
+}
+
+.woocommerce-account .woocommerce-LostPassword {
+  margin: 10px 0 0;
+}
+
+.form-debug-fill {
+  width: 100%;
+  margin: 0 0 22px;
+  padding: 12px 16px;
+  border: 1px dashed var(--red-bright);
+  background: rgba(204, 49, 59, .06);
+  color: var(--red);
+  font: 700 12px/1.2 var(--body);
+  cursor: pointer;
+}
+
+.form-debug-fill i {
+  margin-right: 8px;
+}
+
+@media (min-width: 850px) {
+  .wholesale-hero.section-pad {
+    padding-top: 92px;
+  }
+}
+
+@media (max-width: 849px) {
+  .wholesale-hero.section-pad {
+    min-height: 0;
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+
+  .wholesale-hero h1 {
+    font-size: 62px;
+  }
+}
+
+@media (max-width: 599px) {
+  .wholesale-hero.section-pad {
+    padding-top: 48px;
+    padding-bottom: 52px;
+  }
+
+  .wholesale-hero h1 {
+    font-size: 48px;
+  }
+
+  .woocommerce-account .wp-page-heading h1 {
+    font-size: 48px;
+  }
+
+  .woocommerce-account .woocommerce-form-login,
+  .woocommerce-account .woocommerce-form-register,
+  .woocommerce-account form.woocommerce-ResetPassword {
+    padding: 24px 20px;
+  }
+}
+
 /* Carrito compacto: un producto completo por fila. */
 .fardella-commerce-page .woocommerce-cart-form {
   overflow-x: auto;
@@ -5307,5 +5434,54 @@ p {
   .wholesale-login h2,
   .wholesale-account h2 {
     font-size: 31px;
+  }
+}
+
+/* Ajustes finales: prevalecen sobre las reglas históricas del tema. */
+.wholesale-page .wholesale-hero.section-pad {
+  min-height: 460px;
+  padding-top: 92px;
+  padding-bottom: 82px;
+  align-items: center;
+}
+
+.woocommerce-account main.wp-content-page.fardella-commerce-page {
+  max-width: 1180px;
+  padding-top: 118px;
+}
+
+.woocommerce-account .wp-page-content > .woocommerce {
+  max-width: 920px;
+}
+
+.woocommerce-account .woocommerce-form-login,
+.woocommerce-account .woocommerce-form-register,
+.woocommerce-account form.woocommerce-ResetPassword {
+  max-width: 760px;
+  margin-right: auto;
+}
+
+@media (min-width: 850px) {
+  .wholesale-page .wholesale-hero.section-pad {
+    padding-top: 92px;
+  }
+}
+
+@media (max-width: 849px) {
+  .wholesale-page .wholesale-hero.section-pad {
+    min-height: 0;
+    padding-top: 70px;
+    padding-bottom: 70px;
+  }
+}
+
+@media (max-width: 599px) {
+  .wholesale-page .wholesale-hero.section-pad {
+    padding-top: 48px;
+    padding-bottom: 52px;
+  }
+
+  .woocommerce-account main.wp-content-page.fardella-commerce-page {
+    padding-top: 92px;
   }
 }

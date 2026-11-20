@@ -33,6 +33,12 @@ $user     = wp_get_current_user();
 				<h2>Hola, <?php echo esc_html( $user->display_name ); ?>.</h2>
 				<p>Ya estás viendo los precios mayoristas. Podés recorrer el catálogo, agregar productos al carrito y enviar tu pedido.</p>
 				<div class="wholesale-account-actions"><a class="button button-accent" href="<?php echo esc_url( home_url( '/#productos' ) ); ?>">Ver catálogo <i class="fa-solid fa-arrow-right"></i></a><a class="button button-dark" href="<?php echo esc_url( wc_get_page_permalink( 'myaccount' ) ); ?>">Mi cuenta</a></div>
+			<?php elseif ( current_user_can( 'manage_woocommerce' ) ) : ?>
+				<div class="wholesale-status-icon approved"><i class="fa-solid fa-user-gear"></i></div>
+				<p class="eyebrow dark">Sesión de administración</p>
+				<h2>Estás conectado como administrador.</h2>
+				<p>Para probar una solicitud nueva, cerrá esta sesión o abrí la página en una ventana privada. Las solicitudes recibidas se aprueban desde el panel.</p>
+				<div class="wholesale-account-actions"><a class="button button-accent" href="<?php echo esc_url( admin_url( 'admin.php?page=fardella-wholesale' ) ); ?>">Ver solicitudes <i class="fa-solid fa-arrow-right"></i></a><a class="button button-dark" href="<?php echo esc_url( wp_logout_url( home_url( '/mayoristas/' ) ) ); ?>">Cerrar sesión</a></div>
 			<?php else : ?>
 				<div class="wholesale-status-icon"><i class="fa-regular fa-clock"></i></div>
 				<p class="eyebrow dark">Solicitud en revisión</p>

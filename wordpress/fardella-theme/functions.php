@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'FARDELLA_THEME_VERSION', '1.8.0' );
+define( 'FARDELLA_THEME_VERSION', '1.9.0' );
 
 /**
  * Fardella is a live store. Keep WooCommerce's onboarding wizard from
@@ -270,7 +270,7 @@ function fardella_registration_messages() {
 }
 
 function fardella_user_wholesale_fields( $user ) {
-	if ( ! current_user_can( 'edit_users' ) ) {
+	if ( ! current_user_can( 'edit_users' ) || user_can( $user, 'manage_options' ) ) {
 		return;
 	}
 	$status = get_user_meta( $user->ID, 'fardella_wholesale_status', true );
@@ -296,17 +296,15 @@ function fardella_user_wholesale_fields( $user ) {
 add_action( 'show_user_profile', 'fardella_user_wholesale_fields' );
 add_action( 'edit_user_profile', 'fardella_user_wholesale_fields' );
 
-function fardella_save_user_wholesale_fields( $user_id ) {
-	if ( ! current_user_can( 'edit_user', $user_id ) ) {
-		return;
+function fardella_set_wholesale_status( $user_id, $status ) {
+	$allowed = array( 'none', 'pending', 'approved', 'rejected' );
+	$user    = get_userdata( $user_id );
+
+	if ( ! $user || user_can( $user, 'manage_options' ) || ! in_array( $status, $allowed, true ) ) {
+		return false;
 	}
 
-	$status = sanitize_key( wp_unslash( $_POST['fardella_wholesale_status'] ?? 'none' ) );
-	$cuit   = preg_replace( '/\D+/', '', wp_unslash( $_POST['fardella_cuit'] ?? '' ) );
-	$old    = get_user_meta( $user_id, 'fardella_wholesale_status', true );
-	$user   = new WP_User( $user_id );
-
-	update_user_meta( $user_id, 'fardella_cuit', $cuit );
+	$old = get_user_meta( $user_id, 'fardella_wholesale_status', true );
 	update_user_meta( $user_id, 'fardella_wholesale_status', $status );
 
 	if ( 'approved' === $status ) {
@@ -320,18 +318,62 @@ function fardella_save_user_wholesale_fields( $user_id ) {
 		}
 	} elseif ( 'pending' === $status ) {
 		$user->set_role( 'fardella_wholesale_pending' );
-	} elseif ( 'rejected' === $status || 'none' === $status ) {
+	} else {
 		$user->set_role( 'customer' );
 	}
+
+	return true;
+}
+
+function fardella_save_user_wholesale_fields( $user_id ) {
+	if ( ! current_user_can( 'edit_user', $user_id ) || user_can( $user_id, 'manage_options' ) || ! isset( $_POST['fardella_wholesale_status'] ) ) {
+		return;
+	}
+
+	$status = sanitize_key( wp_unslash( $_POST['fardella_wholesale_status'] ?? 'none' ) );
+	$cuit   = preg_replace( '/\D+/', '', wp_unslash( $_POST['fardella_cuit'] ?? '' ) );
+
+	update_user_meta( $user_id, 'fardella_cuit', $cuit );
+	fardella_set_wholesale_status( $user_id, $status );
 }
 add_action( 'personal_options_update', 'fardella_save_user_wholesale_fields' );
 add_action( 'edit_user_profile_update', 'fardella_save_user_wholesale_fields' );
 
+function fardella_handle_wholesale_admin_action() {
+	if ( empty( $_POST['fardella_wholesale_admin_action'] ) ) {
+		return;
+	}
+
+	if ( ! current_user_can( 'edit_users' ) ) {
+		wp_die( esc_html__( 'No tenés permisos para gestionar mayoristas.', 'fardella' ) );
+	}
+
+	$user_id = absint( $_POST['fardella_wholesale_user_id'] ?? 0 );
+	$status  = sanitize_key( wp_unslash( $_POST['fardella_wholesale_admin_action'] ) );
+	check_admin_referer( 'fardella_wholesale_admin_' . $user_id );
+
+	if ( ! in_array( $status, array( 'approved', 'rejected' ), true ) || ! fardella_set_wholesale_status( $user_id, $status ) ) {
+		wp_die( esc_html__( 'No pudimos actualizar esta solicitud.', 'fardella' ) );
+	}
+
+	wp_safe_redirect(
+		add_query_arg(
+			array(
+				'page'                  => 'fardella-wholesale',
+				'mayorista_actualizada' => $status,
+			),
+			admin_url( 'admin.php' )
+		)
+	);
+	exit;
+}
+add_action( 'admin_init', 'fardella_handle_wholesale_admin_action' );
+
 function fardella_wholesale_settings_menu() {
 	add_submenu_page(
 		'woocommerce',
-		'Fardella Mayoristas',
-		'Fardella Mayoristas',
+		'Solicitudes mayoristas',
+		'Solicitudes mayoristas',
 		'manage_woocommerce',
 		'fardella-wholesale',
 		'fardella_wholesale_settings_page'
@@ -346,9 +388,50 @@ function fardella_register_settings() {
 add_action( 'admin_init', 'fardella_register_settings' );
 
 function fardella_wholesale_settings_page() {
+	$pending_users = get_users(
+		array(
+			'meta_key'   => 'fardella_wholesale_status',
+			'meta_value' => 'pending',
+			'orderby'    => 'registered',
+			'order'      => 'DESC',
+		)
+	);
 	?>
 	<div class="wrap">
-		<h1>Fardella Mayoristas</h1>
+		<h1>Solicitudes mayoristas</h1>
+		<?php if ( isset( $_GET['mayorista_actualizada'] ) ) : ?>
+			<div class="notice notice-success is-dismissible"><p>La solicitud fue actualizada correctamente.</p></div>
+		<?php endif; ?>
+
+		<p>Las personas que completan el formulario público aparecen acá como pendientes. Al aprobar una cuenta, el usuario podrá iniciar sesión y verá automáticamente los precios mayoristas.</p>
+		<?php if ( $pending_users ) : ?>
+			<table class="widefat striped" style="margin: 20px 0 34px;">
+				<thead><tr><th>Comercio</th><th>Contacto</th><th>CUIT</th><th>Fecha</th><th>Acciones</th></tr></thead>
+				<tbody>
+				<?php foreach ( $pending_users as $pending_user ) : ?>
+					<tr>
+						<td><strong><?php echo esc_html( $pending_user->display_name ); ?></strong></td>
+						<td><a href="mailto:<?php echo esc_attr( $pending_user->user_email ); ?>"><?php echo esc_html( $pending_user->user_email ); ?></a><br><?php echo esc_html( get_user_meta( $pending_user->ID, 'billing_phone', true ) ); ?></td>
+						<td><?php echo esc_html( get_user_meta( $pending_user->ID, 'fardella_cuit', true ) ); ?></td>
+						<td><?php echo esc_html( mysql2date( 'd/m/Y H:i', $pending_user->user_registered ) ); ?></td>
+						<td>
+							<form method="post" style="display:flex;gap:8px;align-items:center;">
+								<?php wp_nonce_field( 'fardella_wholesale_admin_' . $pending_user->ID ); ?>
+								<input type="hidden" name="fardella_wholesale_user_id" value="<?php echo esc_attr( $pending_user->ID ); ?>">
+								<button class="button button-primary" type="submit" name="fardella_wholesale_admin_action" value="approved">Aprobar</button>
+								<button class="button" type="submit" name="fardella_wholesale_admin_action" value="rejected">Rechazar</button>
+								<a class="button-link" href="<?php echo esc_url( get_edit_user_link( $pending_user->ID ) ); ?>">Ver datos</a>
+							</form>
+						</td>
+					</tr>
+				<?php endforeach; ?>
+				</tbody>
+			</table>
+		<?php else : ?>
+			<div class="notice notice-info inline"><p>No hay solicitudes pendientes en este momento.</p></div>
+		<?php endif; ?>
+
+		<h2>Configuración</h2>
 		<p>Configurá el precio público y el email que recibe las nuevas solicitudes. Los precios mayoristas se cargan en cada producto.</p>
 		<form method="post" action="options.php">
 			<?php settings_fields( 'fardella_wholesale' ); ?>

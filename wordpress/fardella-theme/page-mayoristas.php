@@ -10,14 +10,6 @@ $messages = fardella_registration_messages();
 $user     = wp_get_current_user();
 ?>
 <main class="wholesale-page">
-	<section class="wholesale-hero section-pad">
-		<div>
-			<p class="eyebrow">Portal para comercios</p>
-			<h1>Precios y pedidos<br><em>mayoristas.</em></h1>
-		</div>
-		<p>Registrá tu bicicletería. Fardella revisará los datos y te avisará por email cuando la cuenta esté habilitada para ver precios exclusivos y armar pedidos.</p>
-	</section>
-
 	<?php if ( ! empty( $messages['success'] ) ) : ?>
 		<div class="wholesale-notice success"><i class="fa-solid fa-circle-check"></i><p><?php echo esc_html( $messages['success'] ); ?></p></div>
 	<?php endif; ?>
@@ -83,11 +75,6 @@ $user     = wp_get_current_user();
 		</section>
 	<?php endif; ?>
 
-	<section class="wholesale-steps section-pad">
-		<article><span>1</span><h3>Completá tus datos</h3><p>Razón social, CUIT, email y teléfono.</p></article>
-		<article><span>2</span><h3>Fardella valida la cuenta</h3><p>El equipo recibe la solicitud y autoriza el acceso.</p></article>
-		<article><span>3</span><h3>Comprá como mayorista</h3><p>Iniciá sesión, mirá tus precios y armá el pedido.</p></article>
-	</section>
 </main>
 <?php get_footer(); ?>
 

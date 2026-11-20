@@ -160,10 +160,11 @@ const setupInquiryForm = () => {
 const setupFormDebug = () => {
   if (!window.fardellaForms?.debug) return;
 
+  const debugEmail = `prueba.mayorista+${Date.now()}@example.com`;
   const defaults = {
     business_name: "Bicicletería Demo",
     cuit: "30-12345678-9",
-    email: "prueba.mayorista@example.com",
+    email: debugEmail,
     phone: "11 5555 0101",
     password: "PruebaFardella2026!",
     nombre: "Cliente de prueba",
@@ -182,25 +183,19 @@ const setupFormDebug = () => {
   };
 
   document.body.classList.add("forms-debug-active");
-  document.querySelectorAll("form").forEach(form => {
-    if (form.querySelector("[data-debug-fill]")) return;
-    const fillable = [...form.elements].some(field => defaults[field.name] !== undefined);
-    if (!fillable) return;
-
-    const button = document.createElement("button");
-    button.type = "button";
-    button.className = "form-debug-fill";
-    button.dataset.debugFill = "";
-    button.innerHTML = '<i class="fa-solid fa-wand-magic-sparkles"></i> Completar datos de prueba';
-    button.addEventListener("click", () => {
+  const fillForms = () => {
+    document.querySelectorAll("form").forEach(form => {
       [...form.elements].forEach(field => {
         if (defaults[field.name] === undefined || field.value) return;
         field.value = defaults[field.name];
         field.dispatchEvent(new Event("change", { bubbles: true }));
       });
     });
-    form.prepend(button);
-  });
+  };
+
+  fillForms();
+  const observer = new MutationObserver(fillForms);
+  observer.observe(document.body, { childList: true, subtree: true });
 };
 
 document.addEventListener("DOMContentLoaded", () => {
